@@ -1,0 +1,78 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<script>
+Ext.onReady(function() {
+    Ext.define('OrderForm', {
+        extend: 'Ext.form.Panel',
+        items: [
+            {
+                xtype: 'textfield',
+                fieldLabel: 'Customer Name',
+                name: 'customerName'
+            },
+            {
+                xtype: 'textfield',
+                fieldLabel: 'Item Name',
+                name: 'itemName'
+            },
+            {
+                xtype: 'textfield',
+                fieldLabel: 'Quantity',
+                name: 'quantity'
+            }
+        ],
+        buttons: [
+            {
+                text: 'Submit',
+                handler: function() {
+                    var form = this.up('form');
+                    Ext.Ajax.request({
+                        url: 'api/orders',
+                        jsonData: this.up('form').getValues(),
+                        success: function(response) {
+                        }
+                    });
+                }
+            }
+        ]
+    });
+
+    var fulfillmentStore = Ext.create('Ext.data.Store', {
+        model: 'Fulfillment',
+        data: @Html.Raw(ServiceStack.Text.JsonSerializer.SerializeToString(Model))
+    });
+
+    var fulfillmentGrid = Ext.create('Ext.grid.Panel', {
+        id: 'fulfillmentGrid',
+        renderTo: 'fulfillmentGrid',
+        store: fulfillmentStore,
+        columns: [
+            { header: 'Item', dataIndex: 'itemName'},
+            { header: 'Quantity', dataIndex: 'quantity'},
+            { header: 'Status', dataIndex: 'status'},
+            { header: 'Fulfiller', dataIndex: 'fulfiller'},
+            {
+                xytpe: 'actioncolumn',
+                items: [{
+                    iconCls: 'x-status-valid',
+                    tooltip: 'fill order',
+                    handler: function() {
+                        alert('fill');
+                    }
+                }]
+            }
+        ]
+    });
+});
+
+var chat = $.connection.gridHub;
+chat.client.refreshGrid = function() {
+    Ext.getCmp('fulfillmentGrid').getStore().refresh();
+};
+$.connection.hub.start();
+</script>
+
+<div id="newOrder"></div>
+<div id="fulfillmentGrid"></div>

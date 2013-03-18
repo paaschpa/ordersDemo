@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>AspNetWebPages.Core</id>
+    <version>2.0.20126.16343</version>
+    <title>ASP.NET Web Pages 2 Core Libraries (Beta)</title>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <projectUrl>http://www.asp.net/web-pages</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This package contains core runtime assemblies shared between ASP.NET MVC and ASP.NET Web Pages.</description>
+    <language>en-US</language>
+    <dependencies>
+      <dependency id="Microsoft.Web.Infrastructure" version="1.0.0.0" />
+      <dependency id="AspNetRazor.Core" version="2.0.20126.16343" />
+    </dependencies>
+    <references>
+      <reference file="System.Web.Helpers.dll" />
+      <reference file="System.Web.WebPages.Deployment.dll" />
+      <reference file="System.Web.WebPages.dll" />
+      <reference file="System.Web.WebPages.Razor.dll" />
+    </references>
+  </metadata>
+</package>

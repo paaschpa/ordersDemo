@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>ServiceStack.Host.Mvc</id>
+    <version>3.9.38</version>
+    <title>Starter ASP.NET MVC Website Template - ServiceStack at /api</title>
+    <authors>Demis Bellot</authors>
+    <owners>Demis Bellot</owners>
+    <licenseUrl>https://github.com/ServiceStack/ServiceStack/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/ServiceStack/ServiceStack</projectUrl>
+    <iconUrl>http://www.servicestack.net/logo-100x100.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Host ServiceStack side-by-side with an existing ASP.NET MVC application at the path '/api'. 
+ServiceStack is a modern, high-performance, code-first web service framework promoting code and web services best practices. Simple, Fast, Elegant. Website: http://www.servicestack.net</description>
+    <summary>Opensource .NET and Mono REST Web Services framework</summary>
+    <copyright>servicestack.net 2012 and contributors</copyright>
+    <language>en-US</language>
+    <tags>Fast JSON XML CSV HTML SOAP JSV REST Web Service Framework MONO ServiceStack</tags>
+    <dependencies>
+      <dependency id="WebActivator" version="1.5" />
+      <dependency id="ServiceStack.Mvc" />
+    </dependencies>
+    <references />
+  </metadata>
+</package>

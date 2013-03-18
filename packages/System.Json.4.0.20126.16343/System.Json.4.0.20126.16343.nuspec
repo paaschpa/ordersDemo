@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>System.Json</id>
+    <version>4.0.20126.16343</version>
+    <title>System.Json (Beta)</title>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <projectUrl>http://www.asp.net/web-api</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This package contains the JsonValue API, which supports dynamic parsing and construction of JSON data.</description>
+    <language>en-US</language>
+    <references>
+      <reference file="System.Json.dll" />
+    </references>
+  </metadata>
+</package>

@@ -1,0 +1,15 @@
+bin/
+Bin/
+obj/
+Obj/
+build/
+App_Data/
+app_data/
+generated/
+*.user
+*.suo
+_ReSharper.*
+*.resharper
+*.sln.cache
+.sass-cache/
+*.orig

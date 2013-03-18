@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>jQuery.Ajax.Unobtrusive</id>
+    <version>2.0.20126.16343</version>
+    <title>jQuery Unobtrusive Ajax</title>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <licenseUrl>http://go.microsoft.com/fwlink/?LinkID=227523</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>jQuery plugin that lets you unobtrusively setup jQuery Ajax.</description>
+    <dependencies>
+      <dependency id="jQuery" version="[1.4.4, 2.0)" />
+    </dependencies>
+    <references />
+  </metadata>
+</package>

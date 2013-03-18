@@ -1,0 +1,80 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<script>
+Ext.onReady(function() {
+    Ext.create('Ext.button.Button', {
+        renderTo: 'newOrder',
+        text: 'new Order',
+        handler: function() {
+            Ext.create('Ext.window.Window', {
+                title: 'Create Order',
+                layout: 'fit',
+                width: 300,
+                height: 400,
+                items: [new OrderForm()]
+            }).show();
+        }
+    });
+
+    Ext.define('OrderForm', {
+        extend: 'Ext.form.Panel',
+        items: [
+            {
+                xtype: 'textfield',
+                fieldLabel: 'Customer Name',
+                name: 'customerName'
+            },
+            {
+                xtype: 'textfield',
+                fieldLabel: 'Item Name',
+                name: 'itemName'
+            },
+            {
+                xtype: 'textfield',
+                fieldLabel: 'Quantity',
+                name: 'quantity'
+            }
+        ],
+        buttons: [
+            {
+                text: 'Submit',
+                handler: function() {
+                    var form = this.up('form');
+                    Ext.Ajax.request({
+                        url: 'api/orders',
+                        jsonData: form.getValues(),
+                        success: function(response) {
+                            form.up('window').close();
+                            //call into signalR
+                            chat.server.refresh('refresh');
+                        }
+                    });
+                }
+            }
+        ]
+    });
+
+    var ordersStore = Ext.create('Ext.data.Store', {
+        model: 'Order',
+        data: @Html.Raw(ServiceStack.Text.JsonSerializer.SerializeToString(Model))
+    });
+
+    var ordersGrid = Ext.create('Ext.grid.Panel', {
+        renderTo: 'ordersGrid',
+        store: ordersStore,
+        columns: [
+            { header: 'Customer', dataIndex: 'customerName'},
+            { header: 'Item', dataIndex: 'itemName'},
+            { header: 'Quantity', dataIndex: 'quantity'}
+        ]
+    });
+});
+
+var chat = $.connection.gridHub;
+$.connection.hub.start();
+</script>
+
+<div id="newOrder"></div>
+<div id="ordersGrid"></div>

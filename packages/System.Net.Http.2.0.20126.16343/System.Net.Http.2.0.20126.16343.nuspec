@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>System.Net.Http</id>
+    <version>2.0.20126.16343</version>
+    <title>System.Net.Http (Beta)</title>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <projectUrl>http://www.asp.net/web-api</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This package provides a programming interface for modern HTTP applications. This package includes HttpClient for sending requests over HTTP, as well as HttpRequestMessage and HttpResponseMessage for processing HTTP messages.</description>
+    <language>en-US</language>
+    <references>
+      <reference file="System.Net.Http.dll" />
+      <reference file="System.Net.Http.WebRequest.dll" />
+    </references>
+  </metadata>
+</package>

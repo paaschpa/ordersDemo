@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>AspNetMvc</id>
+    <version>4.0.20126.16343</version>
+    <title>ASP.NET MVC 4 (Beta)</title>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <projectUrl>http://www.asp.net/mvc</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This package contains the runtime assemblies for ASP.NET MVC. ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that enables a clean separation of concerns and that gives you full control over markup.</description>
+    <language>en-US</language>
+    <dependencies>
+      <dependency id="AspNetWebPages.Core" version="2.0.20126.16343" />
+      <dependency id="AspNetRazor.Core" version="2.0.20126.16343" />
+      <dependency id="System.Web.Http.Common" version="4.0.20126.16343" />
+    </dependencies>
+    <references>
+      <reference file="System.Web.Mvc.dll" />
+    </references>
+  </metadata>
+</package>

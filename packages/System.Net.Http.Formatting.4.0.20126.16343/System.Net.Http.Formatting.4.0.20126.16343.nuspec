@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>System.Net.Http.Formatting</id>
+    <version>4.0.20126.16343</version>
+    <title>System.Net.Http.Formatting (Beta)</title>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <projectUrl>http://www.asp.net/web-api</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This package adds support for formatting and content negotiation to System.Net.Http. It includes support for JSON, XML, and form URL encoded data.</description>
+    <language>en-US</language>
+    <dependencies>
+      <dependency id="System.Net.Http" version="2.0.20126.16343" />
+    </dependencies>
+    <references>
+      <reference file="System.Net.Http.Formatting.dll" />
+    </references>
+  </metadata>
+</package>

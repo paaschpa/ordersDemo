@@ -15,13 +15,7 @@ namespace OrdersDemo.Controllers
 
         public ActionResult Index()
         {
-            using (var service = AppHost.Resolve<FulfillmentService>())
-            {
-                var model = service.Get(new Fulfillment()).FulFillments;
-
-                return View(model);
-            }
+            return View();
         }
-
     }
 }

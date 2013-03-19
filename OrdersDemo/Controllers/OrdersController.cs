@@ -12,15 +12,9 @@ namespace OrdersDemo.Controllers
     {
         //
         // GET: /Orders/
-
         public ActionResult Index()
         {
-            using (var ordersService = AppHost.Resolve<OrdersService>())
-            {
-                var model = ordersService.Get(new Order()).Orders;
-                return View(model);
-            }
+            return View();
         }
-
     }
 }

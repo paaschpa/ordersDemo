@@ -58,9 +58,17 @@ Ext.onReady(function() {
 
     var ordersStore = Ext.create('Ext.data.Store', {
         model: 'Order',
-        data: @Html.Raw(ServiceStack.Text.JsonSerializer.SerializeToString(Model))
+        proxy: {
+            type: 'ajax',
+            url: 'api/orders?format=json',
+            reader: {
+                type: 'json',
+                root: 'orders'                
+            }
+        }
     });
 
+    ordersStore.load();
     var ordersGrid = Ext.create('Ext.grid.Panel', {
         renderTo: 'ordersGrid',
         store: ordersStore,

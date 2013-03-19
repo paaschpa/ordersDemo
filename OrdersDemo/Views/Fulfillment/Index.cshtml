@@ -41,9 +41,17 @@ Ext.onReady(function() {
 
     var fulfillmentStore = Ext.create('Ext.data.Store', {
         model: 'Fulfillment',
-        data: @Html.Raw(ServiceStack.Text.JsonSerializer.SerializeToString(Model))
+        proxy: {
+            type: 'ajax',
+            url: 'api/fulfillment?format=json',
+            reader: {
+                type: 'json',
+                root: 'fulFillments'
+            }
+        }
     });
 
+    fulfillmentStore.load();
     var fulfillmentGrid = Ext.create('Ext.grid.Panel', {
         id: 'fulfillmentGrid',
         renderTo: 'fulfillmentGrid',
@@ -69,7 +77,7 @@ Ext.onReady(function() {
 
 var chat = $.connection.gridHub;
 chat.client.refreshGrid = function() {
-    Ext.getCmp('fulfillmentGrid').getStore().refresh();
+    Ext.getCmp('fulfillmentGrid').getStore().reload();
 };
 $.connection.hub.start();
 </script>

@@ -1,12 +1,18 @@
 ﻿@{
     ViewBag.Title = "Index";
 }
-
+<style>
+    .actionClass {
+        background-color: green;
+        width: 75px;
+        background-image: url('/Scripts/resources/themes/images/neptune/invalid.gif')
+    }
+</style>
 <script>
-Ext.onReady(function() {
-    Ext.define('OrderForm', {
-        extend: 'Ext.form.Panel',
-        items: [
+    Ext.onReady(function () {
+        Ext.define('OrderForm', {
+            extend: 'Ext.form.Panel',
+            items: [
             {
                 xtype: 'textfield',
                 fieldLabel: 'Customer Name',
@@ -23,57 +29,61 @@ Ext.onReady(function() {
                 name: 'quantity'
             }
         ],
-        buttons: [
+            buttons: [
             {
                 text: 'Submit',
-                handler: function() {
+                handler: function () {
                     var form = this.up('form');
                     Ext.Ajax.request({
                         url: 'api/orders',
                         jsonData: this.up('form').getValues(),
-                        success: function(response) {
+                        success: function (response) {
                         }
                     });
                 }
             }
         ]
-    });
+        });
 
-    var fulfillmentStore = Ext.create('Ext.data.Store', {
-        model: 'Fulfillment',
-        proxy: {
-            type: 'ajax',
-            url: 'api/fulfillment?format=json',
-            reader: {
-                type: 'json',
-                root: 'fulFillments'
+        var fulfillmentStore = Ext.create('Ext.data.Store', {
+            model: 'Fulfillment',
+            proxy: {
+                type: 'ajax',
+                url: 'api/fulfillment?format=json',
+                reader: {
+                    type: 'json',
+                    root: 'fulFillments'
+                }
             }
-        }
-    });
+        });
 
-    fulfillmentStore.load();
-    var fulfillmentGrid = Ext.create('Ext.grid.Panel', {
-        id: 'fulfillmentGrid',
-        renderTo: 'fulfillmentGrid',
-        store: fulfillmentStore,
-        columns: [
-            { header: 'Item', dataIndex: 'itemName'},
-            { header: 'Quantity', dataIndex: 'quantity'},
-            { header: 'Status', dataIndex: 'status'},
-            { header: 'Fulfiller', dataIndex: 'fulfiller'},
+        fulfillmentStore.load();
+        var fulfillmentGrid = Ext.create('Ext.grid.Panel', {
+            id: 'fulfillmentGrid',
+            renderTo: 'fulfillmentGrid',
+            store: fulfillmentStore,
+            columns: [
+            { header: 'Item', dataIndex: 'itemName' },
+            { header: 'Quantity', dataIndex: 'quantity' },
+            { header: 'Status', dataIndex: 'status' },
+            { header: 'Fulfiller', dataIndex: 'fulfiller' },
             {
-                xytpe: 'actioncolumn',
+                xtype: 'actioncolumn',
+                width: 50,
                 items: [{
-                    iconCls: 'x-status-valid',
-                    tooltip: 'fill order',
-                    handler: function() {
-                        alert('fill');
-                    }
+                    iconCls:'icon-delete',
+                    tooltip:'Start'
                 }]
             }
         ]
+        });
+
+        Ext.getBody().on('click', function (event, target) {
+            alert(target);
+        }, null, {
+            delegate: '.action'
+        });
     });
-});
 
 var chat = $.connection.gridHub;
 chat.client.refreshGrid = function() {

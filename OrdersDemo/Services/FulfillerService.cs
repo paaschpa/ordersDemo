@@ -57,7 +57,7 @@ namespace OrdersDemo.Services
         {
             using (var con = DbConnectionFactory.OpenDbConnection())
             {
-                var fulfillments = con.Select<Fulfillment>();
+                var fulfillments = con.Select<Fulfillment>(f => f.OrderBy(x => x.Id));
 
                 return new FulfillmentResponse {FulFillments = fulfillments};
             }

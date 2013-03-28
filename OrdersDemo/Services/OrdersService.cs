@@ -62,7 +62,7 @@ namespace OrdersDemo.Services
         {
             using(var conn = dbConn.OpenDbConnection())
             {
-                var orders = conn.Select<Order>();
+                var orders = conn.Select<Order>(o => o.OrderBy(x => x.Id));
                 return new OrdersResponse {Orders = orders};
             }
         }

@@ -49,6 +49,7 @@ namespace OrdersDemo.Services
         public ResponseStatus ResponseStatus { get; set; }
     }
 
+    [Authenticate]
     public class FulfillmentService : Service
     {
         public IDbConnectionFactory DbConnectionFactory { get; set; }

@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Collections.Generic;
 using System.Threading;
 using System.Web.Mvc;
+using OrdersDemo.Models;
 using OrdersDemo.Services;
 using ServiceStack.Configuration;
 using ServiceStack.CacheAccess;
@@ -31,12 +32,26 @@ namespace OrdersDemo.App_Start
 		{
 			//Set JSON web services to return idiomatic JSON camelCase properties
 			ServiceStack.Text.JsConfig.EmitCamelCaseNames = true;
+            Plugins.Add(new AuthFeature(
+                    () => new AuthUserSession(),
+                    new IAuthProvider[] { new MyCredentialsAuthProvider() }
+                ) {HtmlRedirect = null});
+
             var dataFilePath = AppDomain.CurrentDomain.GetData("DataDirectory").ToString() + "\\data.db";
-		    Container.Register<IDbConnectionFactory>(new OrmLiteConnectionFactory(dataFilePath, SqliteDialect.Provider));
+		    container.Register<IDbConnectionFactory>(new OrmLiteConnectionFactory(dataFilePath, SqliteDialect.Provider));
+
+		    var userRep = new OrmLiteAuthRepository(container.Resolve<IDbConnectionFactory>());
+            userRep.CreateMissingTables();
+            foreach(var user in DummyAuthenticationService.DummyUserAccounts)
+            {
+                if(userRep.GetUserAuthByUserName(user.UserName) == null)
+                    userRep.CreateUserAuth(new UserAuth {UserName = user.UserName}, user.Password);
+            }
+		    container.Register<IUserAuthRepository>(userRep);
 
             container.Register<IRedisClientsManager>(new BasicRedisClientManager("localhost:6379"));
-            container.Register<ICacheClient>(c =>(ICacheClient)c.Resolve<IRedisClientsManager>().GetCacheClient());
 
+            container.Register<ICacheClient>(c =>(ICacheClient)c.Resolve<IRedisClientsManager>().GetCacheClient());
 		    using (var con = AppHostBase.Resolve<IDbConnectionFactory>().OpenDbConnection())
 		    {
                 con.CreateTable<Order>();
@@ -47,13 +62,12 @@ namespace OrdersDemo.App_Start
 			ControllerBuilder.Current.SetControllerFactory(new FunqControllerFactory(container));
 
 
-            //Listen for New Orders
+            //Fulfillment is Listening for New Orders messages
             ThreadPool.QueueUserWorkItem(x =>
             {
                 using (var redisConsumer = AppHost.Resolve<IRedisClientsManager>().GetClient())
                 using (var fulfillmentOrderSubscription = redisConsumer.CreateSubscription())
                 {
-                    var messagesReceived = 0;
                     fulfillmentOrderSubscription.OnSubscribe = channel =>
                     {
                         Console.WriteLine("Fulfillment listening for orders on channel {0}", channel);

@@ -30,7 +30,7 @@ namespace OrdersDemo.Services
         }
 
         public ResponseStatus ResponseStatus { get; set; }
-        public List<Fulfillment> FulFillments { get; set; }
+        public List<Fulfillment> Fulfillments { get; set; }
     }
 
     public class CreateFulfillment : IReturn<CreateFulfillmentResponse>
@@ -59,7 +59,7 @@ namespace OrdersDemo.Services
             {
                 var fulfillments = con.Select<Fulfillment>(f => f.OrderBy(x => x.Id));
 
-                return new FulfillmentResponse {FulFillments = fulfillments};
+                return new FulfillmentResponse {Fulfillments = fulfillments};
             }
         }
 

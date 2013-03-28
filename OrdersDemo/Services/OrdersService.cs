@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Microsoft.AspNet.SignalR;
 using ServiceStack.Common;
 using ServiceStack.DataAnnotations;
 using ServiceStack.OrmLite;
@@ -79,6 +80,12 @@ namespace OrdersDemo.Services
                 using (var redisClient = redisClientManager.GetClient())
                 {
                     redisClient.PublishMessage("NewOrder", request.ToJson());
+                }
+                //Alert connections
+                var hub = GlobalHost.ConnectionManager.GetHubContext("GridHub");
+                if (hub != null)
+                {
+                    hub.Clients.All.refreshGrid("newOrder");
                 }
                 return new CreateOrderResponse {Order = newOrder};
             }

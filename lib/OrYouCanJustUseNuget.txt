@@ -1,0 +1,16 @@
+- I don't always use external libraries, but when I do I build them from source. 
+
+
+Install-Package ServiceStack
+modify web.config*http://www.servicestack.net/ServiceStack.Hello/
+sublcass AppHostBase
+in Application_Start() method add new SubClassOfAppHost().Init()
+
+
+Using .NET MVC?
+Install-Package ServiceStack.Host.Mvc
+*Don't forget to remove the /api route!
+
+
+Using ASP.NET
+Install-Package ServiceStack.Host.AspNet

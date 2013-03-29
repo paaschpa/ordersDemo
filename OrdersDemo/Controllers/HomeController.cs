@@ -6,12 +6,13 @@ using System.Web.Mvc;
 using System.Web.Security;
 using OrdersDemo.Models;
 using ServiceStack;
+using ServiceStack.Mvc;
 using ServiceStack.ServiceInterface.Auth;
 using ServiceStack.WebHost.Endpoints;
 
 namespace OrdersDemo.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : ServiceStackController
     {
         public ActionResult Index()
         {

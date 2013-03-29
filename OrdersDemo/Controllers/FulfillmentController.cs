@@ -11,7 +11,8 @@ using ServiceStack.ServiceInterface.Auth;
 
 namespace OrdersDemo.Controllers
 {
-    public class FulfillmentController : ServiceStackController<AuthUserSession>
+    //*If you dont add <AuthUserSession> (or your subclass of it) this.AuthSession  
+    public class FulfillmentController : ServiceStackController<AuthUserSession> 
     {
         [Authenticate]
         public ActionResult Index()

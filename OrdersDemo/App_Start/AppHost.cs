@@ -42,7 +42,7 @@ namespace OrdersDemo.App_Start
 
 		    var userRep = new OrmLiteAuthRepository(container.Resolve<IDbConnectionFactory>());
             userRep.CreateMissingTables();
-            foreach(var user in DummyAuthenticationService.DummyUserAccounts)
+            foreach(var user in DummyUserAccounts.GetDummyAccounts())
             {
                 if(userRep.GetUserAuthByUserName(user.UserName) == null)
                     userRep.CreateUserAuth(new UserAuth {UserName = user.UserName}, user.Password);

@@ -23,6 +23,7 @@
                 <th>Quantity</th>
                 <th>Worker</th>
                 <th>Status</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -31,6 +32,7 @@
                 <td>{{order.quantity}}</td> 
                 <td>{{order.fulfiller}}</td> 
                 <td>{{order.status}}</td> 
+                <td><button ng-click="getButtonState(order)" class="btn btn-success">{{order.buttonText}}</button></td> 
             </tr>
         </tbody>
     </table>

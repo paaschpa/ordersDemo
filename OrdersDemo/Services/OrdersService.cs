@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Microsoft.AspNet.SignalR;
+using OrdersDemo.App_Start;
 using ServiceStack.Common;
 using ServiceStack.DataAnnotations;
 using ServiceStack.OrmLite;
@@ -61,6 +62,8 @@ namespace OrdersDemo.Services
         public IRedisClientsManager redisClientManager { get; set; }
         public OrdersResponse Get(Order request)
         {
+            var z = AppHost.Instance.RequestFilters;
+            Console.Write(z);
             using(var conn = dbConn.OpenDbConnection())
             {
                 var orders = conn.Select<Order>(o => o.OrderBy(x => x.Id));

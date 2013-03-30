@@ -1,20 +1,27 @@
 ﻿var FulfillmentCtrl = function ($scope, $http) {
 
     $scope.refreshGrid = function () {
-        var results1 = $http.get('api/fulfillment');
-        results1.success(function (data) {
-            for (var item in data.fulfillments) {
-                data.fulfillments[item].buttonText = 'Start'
-            }
+        var results = $http.get('api/fulfillment');
+        results.success(function (data) {
             $scope.fulfillments = data.fulfillments;
         });
     };
 
     $scope.refreshGrid();
 
-    $scope.getButtonState = function (order) {
-        if (order.status = 'New') {
-            order.buttonText = 'Complete';
+    $scope.getButtonText = function (status) {
+        if (status == 'New') {
+            return 'Start';
         }
-    }
+        if (status == 'Start') {
+            return 'Complete';
+        }
+    };
+
+    $scope.changeState = function (order) {
+        if (order.status = 'New') {
+            order.status = 'Start';
+            $http.put('api/fulfillment', order);
+        }
+    };
 }

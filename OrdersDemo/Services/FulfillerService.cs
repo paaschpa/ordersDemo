@@ -49,6 +49,18 @@ namespace OrdersDemo.Services
         public ResponseStatus ResponseStatus { get; set; }
     }
 
+
+    public class UpdateFulfillmentResponse : IHasResponseStatus
+    {
+        public UpdateFulfillmentResponse()
+        {
+            this.ResponseStatus = new ResponseStatus();
+        }
+
+        public ResponseStatus ResponseStatus { get; set; }
+    }
+
+
     [Authenticate]
     public class FulfillmentService : Service
     {
@@ -74,6 +86,16 @@ namespace OrdersDemo.Services
                 con.Insert<Fulfillment>(newFulfilllment);
 
                 return new CreateFulfillmentResponse();
+            }
+        }
+
+        public UpdateFulfillmentResponse Put(Fulfillment request)
+        {
+            using (var con = DbConnectionFactory.OpenDbConnection())
+            {
+                var updatedFulfillment = request.TranslateTo<Fulfillment>();
+                con.Update<Fulfillment>(updatedFulfillment);
+                return new UpdateFulfillmentResponse();
             }
         }
     }

@@ -94,6 +94,39 @@ namespace OrdersDemo.App_Start
                     fulfillmentOrderSubscription.SubscribeToChannels("NewOrder"); //blocking
                 }
             });
+
+            //OrderQueue is Listening for New Orders messages
+            ThreadPool.QueueUserWorkItem(x =>
+            {
+                using (var redisConsumer = AppHost.Resolve<IRedisClientsManager>().GetClient())
+                using (var OrderQueueSubscription = redisConsumer.CreateSubscription())
+                {
+                    OrderQueueSubscription.OnSubscribe = channel =>
+                    {
+                        Console.WriteLine("OrderQueue listening for orders on channel {0}", channel);
+                    };
+                    OrderQueueSubscription.OnUnSubscribe = channel =>
+                    {
+                        Console.WriteLine("OrderQueue UnSubscribed from '{0}'", channel);
+                    };
+
+                    OrderQueueSubscription.OnMessage = (channel, msg) =>
+                    {
+                        var createOrderRequest = msg.FromJson<CreateOrder>();
+                        var createOrderInQueue = new OrderInQueue
+                        {
+                            CustomerName = createOrderRequest.CustomerName,
+                            Status = "New"
+                        };
+                        using (var service = AppHostBase.Resolve<OrderQueueService>())
+                        {
+                            service.Post(createOrderInQueue);
+                        }
+                    };
+
+                    OrderQueueSubscription.SubscribeToChannels("NewOrder"); //blocking
+                }
+            });
 		}
 
 		public static void Start()

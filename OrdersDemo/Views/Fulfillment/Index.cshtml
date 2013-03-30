@@ -32,7 +32,7 @@
                 <td>{{order.quantity}}</td> 
                 <td>{{order.fulfiller}}</td> 
                 <td>{{order.status}}</td> 
-                <td><button ng-click="getButtonState(order)" class="btn btn-success">{{order.buttonText}}</button></td> 
+                <td><button class="btn btn-success" ng-click="changeState(order)">{{getButtonText(order.status)}}</button></td> 
             </tr>
         </tbody>
     </table>

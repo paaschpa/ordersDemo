@@ -17,5 +17,10 @@ namespace OrdersDemo.Controllers
         {
             return View();
         }
+
+        public ActionResult Queue()
+        {
+            return View();
+        }
     }
 }

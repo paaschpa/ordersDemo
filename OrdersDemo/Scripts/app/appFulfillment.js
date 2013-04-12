@@ -3,7 +3,7 @@
     $scope.refreshGrid = function () {
         var results = $http.get('api/fulfillment');
         results.success(function (data) {
-            $scope.fulfillments = data.fulfillments;
+            $scope.fulfillments = data;
         });
     };
 
@@ -19,7 +19,7 @@
     };
 
     $scope.changeState = function (order) {
-        if (order.status = 'New') {
+        if (order.status == 'New') {
             order.status = 'Start';
             $http.put('api/fulfillment', order);
         }

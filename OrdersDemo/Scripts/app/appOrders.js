@@ -2,7 +2,7 @@
 
     var results = $http.get('api/orders');
     results.success(function (data) {
-        $scope.orders = data.orders;
+        $scope.orders = data;
     });
 
     $scope.addOrder = function () {

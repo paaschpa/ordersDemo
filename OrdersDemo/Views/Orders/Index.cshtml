@@ -2,87 +2,65 @@
     ViewBag.Title = "Index";
 }
 
+<script src='@Href("/Scripts/app/appOrders.js")'></script>
 <script>
-Ext.onReady(function() {
-    Ext.create('Ext.button.Button', {
-        renderTo: 'newOrder',
-        text: 'new Order',
-        handler: function() {
-            Ext.create('Ext.window.Window', {
-                title: 'Create Order',
-                layout: 'fit',
-                width: 300,
-                height: 400,
-                items: [new OrderForm()]
-            }).show();
-        }
+    $(document).ready(function() {
+        var chat = $.connection.gridHub;
+        $.connection.hub.start();
     });
-
-    Ext.define('OrderForm', {
-        extend: 'Ext.form.Panel',
-        items: [
-            {
-                xtype: 'textfield',
-                fieldLabel: 'Customer Name',
-                name: 'customerName'
-            },
-            {
-                xtype: 'textfield',
-                fieldLabel: 'Item Name',
-                name: 'itemName'
-            },
-            {
-                xtype: 'textfield',
-                fieldLabel: 'Quantity',
-                name: 'quantity'
-            }
-        ],
-        buttons: [
-            {
-                text: 'Submit',
-                handler: function() {
-                    var form = this.up('form');
-                    Ext.Ajax.request({
-                        url: 'api/orders',
-                        jsonData: form.getValues(),
-                        success: function(response) {
-                            form.up('window').close();
-                            //call into signalR
-                            chat.server.refresh('refresh');
-                        }
-                    });
-                }
-            }
-        ]
-    });
-
-    var ordersStore = Ext.create('Ext.data.Store', {
-        model: 'Order',
-        proxy: {
-            type: 'ajax',
-            url: 'api/orders?format=json',
-            reader: {
-                type: 'json',
-                root: 'orders'                
-            }
-        }
-    });
-
-    ordersStore.load();
-    var ordersGrid = Ext.create('Ext.grid.Panel', {
-        renderTo: 'ordersGrid',
-        store: ordersStore,
-        columns: [
-            { header: 'Customer', dataIndex: 'customerName'},
-            { header: 'Item', dataIndex: 'itemName'},
-            { header: 'Quantity', dataIndex: 'quantity'}
-        ]
-    });
-});
-
-var chat = $.connection.gridHub;
-$.connection.hub.start();
 </script>
 
-<div id="newOrder"></div>
-<div id="ordersGrid"></div>
+<div ng-app>
+    <div ng-controller="OrderCtrl">
+        <a href="#modalOrders" role="button" class="btn" data-toggle="modal">New Order</a>
+        <p>&nbsp;</p>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Customer</th>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="order in orders">
+                    <td>{{order.customerName}}</td> 
+                    <td>{{order.itemName}}</td> 
+                    <td>{{order.quantity}}</td> 
+                </tr>
+            </tbody>
+        </table>
+        
+        <!-- Modal Orders Window -->
+        <div id="modalOrders" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-body">
+            <form class="form-horizontal">
+                <div class="control-group">
+                    <label class="control-label">Customer</label>
+                    <div class="controls">
+                        <input type="text" ng-model="newOrderCustomerName" placeholder="Customer Name"/> 
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Item</label>
+                    <div class="controls">
+                        <input type="text" ng-model="newOrderItemName" placeholder="Item"/> 
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Quantity</label>
+                    <div class="controls">
+                        <input type="text" class="input-mini" ng-model="newOrderQuantity" placeholder="Quantity"/> 
+                    </div>
+                </div>
+            </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                <button class="btn btn-primary" ng-click="addOrder()">Save</button>
+            </div>
+        </div>
+
+    </div>
+</div>

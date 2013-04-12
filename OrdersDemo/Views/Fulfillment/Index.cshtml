@@ -1,86 +1,41 @@
 ﻿@{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Fulfillment";
 }
 
+<script src='@Href("/Scripts/app/appFulfillment.js")'></script>
 <script>
-Ext.onReady(function() {
-    Ext.define('OrderForm', {
-        extend: 'Ext.form.Panel',
-        items: [
-            {
-                xtype: 'textfield',
-                fieldLabel: 'Customer Name',
-                name: 'customerName'
-            },
-            {
-                xtype: 'textfield',
-                fieldLabel: 'Item Name',
-                name: 'itemName'
-            },
-            {
-                xtype: 'textfield',
-                fieldLabel: 'Quantity',
-                name: 'quantity'
-            }
-        ],
-        buttons: [
-            {
-                text: 'Submit',
-                handler: function() {
-                    var form = this.up('form');
-                    Ext.Ajax.request({
-                        url: 'api/orders',
-                        jsonData: this.up('form').getValues(),
-                        success: function(response) {
-                        }
-                    });
-                }
-            }
-        ]
+    $(document).ready(function () {
+        var chat = $.connection.gridHub;
+        chat.client.refreshGrid = function () {
+            var scope = angular.element("#fulfillmentController").scope();
+            scope.refreshGrid();
+        };
+        $.connection.hub.start();
     });
-
-    var fulfillmentStore = Ext.create('Ext.data.Store', {
-        model: 'Fulfillment',
-        proxy: {
-            type: 'ajax',
-            url: 'api/fulfillment?format=json',
-            reader: {
-                type: 'json',
-                root: 'fulFillments'
-            }
-        }
-    });
-
-    fulfillmentStore.load();
-    var fulfillmentGrid = Ext.create('Ext.grid.Panel', {
-        id: 'fulfillmentGrid',
-        renderTo: 'fulfillmentGrid',
-        store: fulfillmentStore,
-        columns: [
-            { header: 'Item', dataIndex: 'itemName'},
-            { header: 'Quantity', dataIndex: 'quantity'},
-            { header: 'Status', dataIndex: 'status'},
-            { header: 'Fulfiller', dataIndex: 'fulfiller'},
-            {
-                xytpe: 'actioncolumn',
-                items: [{
-                    iconCls: 'x-status-valid',
-                    tooltip: 'fill order',
-                    handler: function() {
-                        alert('fill');
-                    }
-                }]
-            }
-        ]
-    });
-});
-
-var chat = $.connection.gridHub;
-chat.client.refreshGrid = function() {
-    Ext.getCmp('fulfillmentGrid').getStore().reload();
-};
-$.connection.hub.start();
 </script>
-
-<div id="newOrder"></div>
-<div id="fulfillmentGrid"></div>
+<div ng-app>
+<div id="fulfillmentController" ng-controller="FulfillmentCtrl">
+    <p>&nbsp;</p>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Worker</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="order in fulfillments">
+                <td>{{order.itemName}}</td> 
+                <td>{{order.quantity}}</td> 
+                <td>{{order.fulfiller}}</td> 
+                <td>{{order.status}}</td> 
+                <td><button class="btn btn-success" ng-click="changeState(order)">{{getButtonText(order.status)}}</button></td> 
+            </tr>
+        </tbody>
+    </table>
+</div>
+</div>
+ 

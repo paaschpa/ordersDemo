@@ -34,9 +34,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.4.1.10331.0\lib\net40\EntityFramework.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Core">
       <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.1.0.1\lib\net40\Microsoft.AspNet.SignalR.Core.dll</HintPath>
     </Reference>
@@ -60,39 +57,42 @@
     <Reference Include="Owin">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack">
-      <HintPath>..\packages\ServiceStack.3.9.38\lib\net35\ServiceStack.dll</HintPath>
+    <Reference Include="ServiceStack, Version=3.9.38.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\ServiceStack.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Common">
-      <HintPath>..\packages\ServiceStack.Common.3.9.38\lib\net35\ServiceStack.Common.dll</HintPath>
+    <Reference Include="ServiceStack.Common, Version=3.9.38.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\ServiceStack.Common.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.FluentValidation.Mvc3">
-      <HintPath>..\packages\ServiceStack.Mvc.3.9.38\lib\net40\ServiceStack.FluentValidation.Mvc3.dll</HintPath>
+    <Reference Include="ServiceStack.FluentValidation.Mvc3, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\ServiceStack.FluentValidation.Mvc3.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Interfaces">
-      <HintPath>..\packages\ServiceStack.Common.3.9.38\lib\net35\ServiceStack.Interfaces.dll</HintPath>
+    <Reference Include="ServiceStack.Interfaces, Version=3.9.38.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\ServiceStack.Interfaces.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.OrmLite">
-      <HintPath>..\packages\ServiceStack.OrmLite.Sqlite32.3.9.39\lib\net40\ServiceStack.OrmLite.dll</HintPath>
+    <Reference Include="ServiceStack.OrmLite, Version=3.9.39.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\ServiceStack.OrmLite.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.OrmLite.SqliteNET">
       <HintPath>..\packages\ServiceStack.OrmLite.Sqlite32.3.9.39\lib\net40\ServiceStack.OrmLite.SqliteNET.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.OrmLite.SqlServer">
-      <HintPath>..\packages\ServiceStack.OrmLite.SqlServer.3.9.39\lib\ServiceStack.OrmLite.SqlServer.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Redis">
-      <HintPath>..\packages\ServiceStack.Redis.3.9.38\lib\net35\ServiceStack.Redis.dll</HintPath>
+    <Reference Include="ServiceStack.Redis, Version=3.9.40.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\ServiceStack.Redis.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.ServiceInterface">
-      <HintPath>..\packages\ServiceStack.3.9.38\lib\net35\ServiceStack.ServiceInterface.dll</HintPath>
+      <HintPath>..\lib\ServiceStack.ServiceInterface.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Text">
-      <HintPath>..\packages\ServiceStack.Text.3.9.38\lib\net35\ServiceStack.Text.dll</HintPath>
+    <Reference Include="ServiceStack.Text, Version=3.9.38.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\ServiceStack.Text.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Data.SQLite">
       <HintPath>..\packages\System.Data.SQLite.1.0.84.0\lib\net40\System.Data.SQLite.dll</HintPath>
     </Reference>
@@ -117,7 +117,6 @@
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\AspNetWebPages.Core.2.0.20126.16343\lib\net40\System.Web.Helpers.dll</HintPath>
@@ -165,7 +164,6 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
-    <Reference Include="System.EnterpriseServices" />
     <Reference Include="WebActivator">
       <HintPath>..\packages\WebActivator.1.5.3\lib\net40\WebActivator.dll</HintPath>
     </Reference>
@@ -173,57 +171,34 @@
   <ItemGroup>
     <Compile Include="App_Start\AppHost.cs" />
     <Compile Include="Controllers\FulfillmentController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\DummyUserAccount.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\FulfillerService.cs" />
-    <Compile Include="Services\OrdersService.cs" />
     <Compile Include="SignalR\GridHub.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap\css\bootstrap-responsive.css" />
+    <Content Include="Content\bootstrap\css\bootstrap-responsive.min.css" />
+    <Content Include="Content\bootstrap\css\bootstrap.css" />
+    <Content Include="Content\bootstrap\css\bootstrap.min.css" />
+    <Content Include="Content\bootstrap\img\glyphicons-halflings-white.png" />
+    <Content Include="Content\bootstrap\img\glyphicons-halflings.png" />
+    <Content Include="Content\bootstrap\js\bootstrap.js" />
+    <Content Include="Content\bootstrap\js\bootstrap.min.js" />
     <Content Include="Content\js\ss-validation.js" />
-    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
-    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
-    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
-    <Content Include="Content\themes\base\jquery.ui.accordion.css" />
-    <Content Include="Content\themes\base\jquery.ui.all.css" />
-    <Content Include="Content\themes\base\jquery.ui.autocomplete.css" />
-    <Content Include="Content\themes\base\jquery.ui.base.css" />
-    <Content Include="Content\themes\base\jquery.ui.button.css" />
-    <Content Include="Content\themes\base\jquery.ui.core.css" />
-    <Content Include="Content\themes\base\jquery.ui.datepicker.css" />
-    <Content Include="Content\themes\base\jquery.ui.dialog.css" />
-    <Content Include="Content\themes\base\jquery.ui.progressbar.css" />
-    <Content Include="Content\themes\base\jquery.ui.resizable.css" />
-    <Content Include="Content\themes\base\jquery.ui.selectable.css" />
-    <Content Include="Content\themes\base\jquery.ui.slider.css" />
-    <Content Include="Content\themes\base\jquery.ui.tabs.css" />
-    <Content Include="Content\themes\base\jquery.ui.theme.css" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="jqunback-1.51.min.js" />
     <Content Include="README.txt" />
-    <Content Include="Scripts\App\Types.js" />
-    <Content Include="Scripts\extjs\ext-all-debug.js" />
-    <Content Include="Scripts\extjs\ext-neptune-debug.js" />
-    <Content Include="Scripts\extjs\Notes.txt" />
-    <Content Include="Scripts\jquery-1.6.4-vsdoc.js" />
-    <Content Include="Scripts\jquery-1.6.4.js" />
-    <Content Include="Scripts\jquery-1.6.4.min.js" />
-    <Content Include="Scripts\jquery-ui-1.8.11.js" />
-    <Content Include="Scripts\jquery-ui-1.8.11.min.js" />
+    <Content Include="Scripts\angular.js" />
+    <Content Include="Scripts\app\appFulfillment.js" />
+    <Content Include="Scripts\app\appOrders.js" />
+    <Content Include="Scripts\app\appOrdersQueue.js" />
+    <Content Include="Scripts\jquery.js" />
     <Content Include="Scripts\jquery.signalR-1.0.1.js" />
     <Content Include="Scripts\jquery.signalR-1.0.1.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
@@ -233,57 +208,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\knockout-2.0.0.debug.js" />
-    <Content Include="Scripts\knockout-2.0.0.js" />
     <Content Include="Scripts\modernizr-2.0.6-development-only.js" />
-    <Content Include="Scripts\resources\css\ext-neptune.css" />
-    <Content Include="Scripts\resources\css\sink.css" />
-    <Content Include="Scripts\resources\themes\images\neptune\button\arrow.gif" />
-    <Content Include="Scripts\resources\themes\images\neptune\button\arrow.png" />
-    <Content Include="Scripts\resources\themes\images\neptune\button\btn.gif" />
-    <Content Include="Scripts\resources\themes\images\neptune\button\group-cs.gif" />
-    <Content Include="Scripts\resources\themes\images\neptune\button\group-lr.gif" />
-    <Content Include="Scripts\resources\themes\images\neptune\button\group-tb.gif" />
-    <Content Include="Scripts\resources\themes\images\neptune\button\s-arrow-b-noline.gif" />
-    <Content Include="Scripts\resources\themes\images\neptune\button\s-arrow-b.gif" />
-    <Content Include="Scripts\resources\themes\images\neptune\button\s-arrow-bo.gif" />
-    <Content Include="Scripts\resources\themes\images\neptune\button\s-arrow-light.gif" />
-    <Content Include="Scripts\resources\themes\images\neptune\button\s-arrow-noline.png" />
-    <Content Include="Scripts\resources\themes\images\neptune\button\s-arrow-o.png" />
-    <Content Include="Scripts\resources\themes\images\neptune\button\s-arrow-p.png" />
-    <Content Include="Scripts\resources\themes\images\neptune\button\s-arrow.png" />
-    <Content Include="Scripts\resources\themes\images\neptune\checkbox.gif" />
-    <Content Include="Scripts\resources\themes\images\neptune\grid\header-border.png" />
-    <Content Include="Scripts\resources\themes\images\neptune\grid\loading.gif" />
-    <Content Include="Scripts\resources\themes\images\neptune\grid\sort.png" />
-    <Content Include="Scripts\resources\themes\images\neptune\icons.png" />
-    <Content Include="Scripts\resources\themes\images\neptune\invalid.gif" />
-    <Content Include="Scripts\resources\themes\images\neptune\radio.gif" />
-    <Content Include="Scripts\resources\themes\images\neptune\sizer\e-handle-dark.gif" />
-    <Content Include="Scripts\resources\themes\images\neptune\sizer\e-handle.gif" />
-    <Content Include="Scripts\resources\themes\images\neptune\sizer\ne-handle-dark.gif" />
-    <Content Include="Scripts\resources\themes\images\neptune\sizer\ne-handle.gif" />
-    <Content Include="Scripts\resources\themes\images\neptune\sizer\nw-handle-dark.gif" />
-    <Content Include="Scripts\resources\themes\images\neptune\sizer\nw-handle.gif" />
-    <Content Include="Scripts\resources\themes\images\neptune\sizer\s-handle-dark.gif" />
-    <Content Include="Scripts\resources\themes\images\neptune\sizer\s-handle.gif" />
-    <Content Include="Scripts\resources\themes\images\neptune\sizer\se-handle-dark.gif" />
-    <Content Include="Scripts\resources\themes\images\neptune\sizer\se-handle.gif" />
-    <Content Include="Scripts\resources\themes\images\neptune\sizer\square.gif" />
-    <Content Include="Scripts\resources\themes\images\neptune\sizer\sw-handle-dark.gif" />
-    <Content Include="Scripts\resources\themes\images\neptune\sizer\sw-handle.gif" />
-    <Content Include="Scripts\resources\themes\images\neptune\tools-small.png" />
-    <Content Include="Scripts\resources\themes\images\neptune\tools.png" />
-    <Content Include="Scripts\resources\themes\images\neptune\tree\elbows.png" />
-    <Content Include="Scripts\resources\themes\images\neptune\tree\icons-blue.png" />
-    <Content Include="Scripts\resources\themes\images\neptune\tree\icons-gray.png" />
-    <Content Include="Scripts\resources\themes\images\neptune\tree\icons-navy.png" />
-    <Content Include="Scripts\resources\themes\images\neptune\tree\icons-orange.png" />
-    <Content Include="Scripts\resources\themes\images\neptune\tree\icons-white.png" />
-    <Content Include="Scripts\resources\themes\images\neptune\tree\icons.png" />
-    <Content Include="Scripts\resources\themes\images\neptune\triggerfield.png" />
-    <Content Include="Scripts\resources\themes\images\neptune\valid.gif" />
-    <Content Include="Scripts\resources\themes\images\neptune\WYSIWYG.png" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -305,7 +230,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -315,6 +239,25 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Fulfillment\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\LogIn.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Orders\Queue.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OrdersDemo.ServiceInterface\OrdersDemo.ServiceInterface.csproj">
+      <Project>{D59BD603-2BE6-4ECA-A754-915ABDFC396C}</Project>
+      <Name>OrdersDemo.ServiceInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OrdersDemo.ServiceModel\OrdersDemo.ServiceModel.csproj">
+      <Project>{A09AB2A9-6F1A-4C2E-A705-D99CFCF11DF9}</Project>
+      <Name>OrdersDemo.ServiceModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

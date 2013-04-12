@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "Queue";
+}
+
+<script src='@Href("/Scripts/app/appOrdersQueue.js")'></script>
+<script>
+    $(document).ready(function () {
+        var chat = $.connection.gridHub;
+        $.connection.hub.start();
+    });
+</script>
+
+<div ng-app>
+<div ng-controller="OrdersQueueCtrl">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Customer</th>
+                <th>Status</th>
+                <th>Enter Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="order in orders">
+                <td>{{order.customerName}}</td> 
+                <td>{{order.status}}</td> 
+                <td>{{order.createdDate}}</td> 
+            </tr>
+        </tbody>
+    </table>
+</div>
+</div>
+ 

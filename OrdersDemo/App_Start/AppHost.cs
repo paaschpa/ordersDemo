@@ -5,7 +5,9 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Web.Mvc;
 using OrdersDemo.Models;
-using OrdersDemo.Services;
+using OrdersDemo.ServiceInterface;
+using OrdersDemo.ServiceModel;
+using OrdersDemo.ServiceModel.Operations;
 using ServiceStack.Configuration;
 using ServiceStack.CacheAccess;
 using ServiceStack.CacheAccess.Providers;
@@ -34,7 +36,7 @@ namespace OrdersDemo.App_Start
 			ServiceStack.Text.JsConfig.EmitCamelCaseNames = true;
             Plugins.Add(new AuthFeature(
                     () => new AuthUserSession(),
-                    new IAuthProvider[] { new MyCredentialsAuthProvider() }
+                    new IAuthProvider[] { new CredentialsAuthProvider() }
                 ) {HtmlRedirect = null});
 
             var dataFilePath = AppDomain.CurrentDomain.GetData("DataDirectory").ToString() + "\\data.db";

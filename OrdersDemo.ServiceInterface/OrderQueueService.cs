@@ -2,32 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using OrdersDemo.ServiceModel;
 using ServiceStack.Redis;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.ServiceModel;
 using ServiceStack.Text;
 
-namespace OrdersDemo.Services
+namespace OrdersDemo.ServiceInterface
 {
-    [Route("/OrderInQueue")]
-    public class OrderInQueue
-    {
-        public string CustomerName { get; set; }
-        public string Status { get; set; }
-        public DateTime CreatedDate { get; set; }
-    }
-
-    public class CreateOrderInQueueResponse
-    {
-        public CreateOrderInQueueResponse()
-        {
-            this.ResponseStatus = new ResponseStatus();
-        }
-
-        public ResponseStatus ResponseStatus { get; set; }
-    }
-
     public class OrderQueueService : Service
     {
         public IRedisClientsManager RedisClientsManager { get; set; }
@@ -48,7 +31,8 @@ namespace OrdersDemo.Services
             {
                 request.CreatedDate = DateTime.Now;
                 con.AddItemToList("urn:OrdersInQueue", request.ToJson());
-                return new CreateOrderInQueueResponse();
+
+                return "Item Succesfully Added";
             }
         }
     }

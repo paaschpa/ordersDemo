@@ -2,81 +2,30 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using OrdersDemo.ServiceModel;
+using OrdersDemo.ServiceModel.Operations;
 using ServiceStack.Common;
-using ServiceStack.DataAnnotations;
 using ServiceStack.OrmLite;
-using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
-using ServiceStack.ServiceInterface.ServiceModel;
 
-namespace OrdersDemo.Services
+namespace OrdersDemo.ServiceInterface
 {
-    [Route("/Fulfillment")]
-    public class Fulfillment
-    {
-        [AutoIncrement]
-        public int Id { get; set; }
-        public string ItemName { get; set; }
-        public int Quantity { get; set; }
-        public string Fulfiller { get; set; }
-        public string Status { get; set; }
-    }
-
-    public class FulfillmentResponse : IHasResponseStatus
-    {
-        public FulfillmentResponse()
-        {
-            this.ResponseStatus = new ResponseStatus();
-        }
-
-        public ResponseStatus ResponseStatus { get; set; }
-        public List<Fulfillment> Fulfillments { get; set; }
-    }
-
-    public class CreateFulfillment : IReturn<CreateFulfillmentResponse>
-    {
-        public string ItemName { get; set; }
-        public int Quantity { get; set; }
-    }
-
-    public class CreateFulfillmentResponse : IHasResponseStatus
-    {
-        public CreateFulfillmentResponse()
-        {
-            this.ResponseStatus = new ResponseStatus();
-        }
-
-        public ResponseStatus ResponseStatus { get; set; }
-    }
-
-
-    public class UpdateFulfillmentResponse : IHasResponseStatus
-    {
-        public UpdateFulfillmentResponse()
-        {
-            this.ResponseStatus = new ResponseStatus();
-        }
-
-        public ResponseStatus ResponseStatus { get; set; }
-    }
-
-
     [Authenticate]
     public class FulfillmentService : Service
     {
         public IDbConnectionFactory DbConnectionFactory { get; set; }
 
-        public FulfillmentResponse Get(Fulfillment reqeust)
+        public List<Fulfillment> Get(Fulfillment request)
         {
             using (var con = DbConnectionFactory.OpenDbConnection())
             {
                 var fulfillments = con.Select<Fulfillment>(f => f.OrderBy(x => x.Id));
 
-                return new FulfillmentResponse {Fulfillments = fulfillments};
+                return fulfillments;
             }
         }
 
-        public CreateFulfillmentResponse Post(CreateFulfillment request)
+        public Fulfillment Post(CreateFulfillment request)
         {
             using (var con = DbConnectionFactory.OpenDbConnection())
             {
@@ -85,17 +34,17 @@ namespace OrdersDemo.Services
 
                 con.Insert<Fulfillment>(newFulfilllment);
 
-                return new CreateFulfillmentResponse();
+                return newFulfilllment;
             }
         }
 
-        public UpdateFulfillmentResponse Put(Fulfillment request)
+        public Fulfillment Put(Fulfillment request)
         {
             using (var con = DbConnectionFactory.OpenDbConnection())
             {
                 var updatedFulfillment = request.TranslateTo<Fulfillment>();
                 con.Update<Fulfillment>(updatedFulfillment);
-                return new UpdateFulfillmentResponse();
+                return updatedFulfillment;
             }
         }
     }

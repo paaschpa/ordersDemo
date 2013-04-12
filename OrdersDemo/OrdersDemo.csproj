@@ -181,10 +181,7 @@
     </Compile>
     <Compile Include="Models\DummyUserAccount.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\FulfillerService.cs" />
     <Compile Include="Services\MyCredentialsAuthProvider.cs" />
-    <Compile Include="Services\OrderQueueService.cs" />
-    <Compile Include="Services\OrdersService.cs" />
     <Compile Include="SignalR\GridHub.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -6,18 +6,23 @@
 <script>
     $(document).ready(function () {
         var chat = $.connection.gridHub;
+        chat.client.refreshGrid = function () {
+            var scope = angular.element("#QueueController").scope();
+            scope.refreshGrid();
+        };
         $.connection.hub.start();
     });
 </script>
 
 <div ng-app>
-<div ng-controller="OrdersQueueCtrl">
+<div id="QueueController" ng-controller="OrdersQueueCtrl">
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>Customer</th>
                 <th>Status</th>
                 <th>Enter Date</th>
+                <th>Worker</th>
             </tr>
         </thead>
         <tbody>
@@ -25,6 +30,7 @@
                 <td>{{order.customerName}}</td> 
                 <td>{{order.status}}</td> 
                 <td>{{order.createdDate}}</td> 
+                <td>{{order.worker}}</td> 
             </tr>
         </tbody>
     </table>

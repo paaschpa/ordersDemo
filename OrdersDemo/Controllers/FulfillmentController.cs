@@ -24,7 +24,7 @@ namespace OrdersDemo.Controllers
             {
                 if (this.AuthSession == null || this.AuthSession.IsAuthenticated == false)
                 {
-                    return Redirect("~/Home");
+                    return Redirect("~/Home/Login");
                 }
                 return base.AuthenticationErrorResult;
             }

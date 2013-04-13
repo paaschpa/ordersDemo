@@ -1,3 +1,7 @@
+@using OrdersDemo.App_Start
+@using ServiceStack.CacheAccess
+@using ServiceStack.ServiceInterface
+@using ServiceStack.ServiceInterface.Auth
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,7 +33,21 @@
                     <div class="nav-collapse collapse">
                         <ul class="nav">
                             <li class="active"><a href="/">Home</a></li>
-                            <li><a href="/home/login">Login (Gives access to Order Fulfillments)</a></li>
+                            <li class="active">
+                                @{ 
+                                    //TODO:hmmm, might be missing a better way to do this...
+                                    var key = SessionFeature.GetSessionKey();
+                                    var sess = AppHost.Resolve<ICacheClient>().Get<AuthUserSession>(key);
+                                    if (sess != null && sess.IsAuthenticated)
+                                    {
+                                        @:<a href="/home/logout">Logout @sess.UserName </a>
+                                    }
+                                    else
+                                    {
+                                        @:<a href="/home/login">Login (Gives access to Order Fulfillments)</a>
+                                    }
+                                }
+                            </li>
                         </ul>
                     </div><!--/.nav-collapse -->
                 </div>

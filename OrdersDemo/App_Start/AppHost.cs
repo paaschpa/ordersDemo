@@ -2,23 +2,17 @@ using System;
 using System.Linq;
 using System.Configuration;
 using System.Collections.Generic;
-using System.Threading;
 using System.Web.Mvc;
 using OrdersDemo.Models;
 using OrdersDemo.ServiceInterface;
 using OrdersDemo.ServiceInterface.Subscribers;
 using OrdersDemo.ServiceModel;
-using OrdersDemo.ServiceModel.Operations;
-using ServiceStack.Configuration;
 using ServiceStack.CacheAccess;
-using ServiceStack.CacheAccess.Providers;
 using ServiceStack.Mvc;
 using ServiceStack.OrmLite;
 using ServiceStack.Redis;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
-using ServiceStack.ServiceInterface.ServiceModel;
-using ServiceStack.Text;
 using ServiceStack.WebHost.Endpoints;
 
 [assembly: WebActivator.PreApplicationStartMethod(typeof(OrdersDemo.App_Start.AppHost), "Start")]

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using OrdersDemo.ServiceModel;
 using OrdersDemo.ServiceModel.Operations;
+using ServiceStack.CacheAccess;
 using ServiceStack.Redis;
 using ServiceStack.Text;
 using ServiceStack.WebHost.Endpoints;
@@ -13,7 +14,13 @@ namespace OrdersDemo.ServiceInterface.Subscribers
 {
     public class OrderSubscribers
     {
-        public void StartSubscriberThreads(Funq.Container container) //need to resolve dependencies...
+        private Funq.Container _container;
+        public OrderSubscribers(Funq.Container container)
+        {
+            _container = container;
+        }
+
+        public void StartSubscriberThreads() //need to resolve dependencies...
         {
             //Create a fulfillment when an Order is posted
             StartThread("NewOrder", (channel, msg) =>
@@ -24,7 +31,7 @@ namespace OrdersDemo.ServiceInterface.Subscribers
                             ItemName = createOrderRequest.ItemName,
                             Quantity = createOrderRequest.Quantity
                         };
-                        using (var service = container.Resolve<FulfillmentService>())
+                        using (var service = _container.Resolve<FulfillmentService>())
                         {
                             service.Post(createFulfillment);
                         }
@@ -39,7 +46,7 @@ namespace OrdersDemo.ServiceInterface.Subscribers
                             CustomerName = createOrderRequest.CustomerName,
                             Status = "New"
                         };
-                        using (var service = container.Resolve<OrderQueueService>())
+                        using (var service = _container.Resolve<OrderQueueService>())
                         {
                             service.Post(createOrderInQueue);
                         }
@@ -50,7 +57,7 @@ namespace OrdersDemo.ServiceInterface.Subscribers
         {
             ThreadPool.QueueUserWorkItem(x =>
             {
-                using (var redisConsumer = new BasicRedisClientManager().GetClient())
+                using (var redisConsumer = _container.Resolve<IRedisClientsManager>().GetClient())
                 using (var subscription = redisConsumer.CreateSubscription())
                 {
                     subscription.OnSubscribe = channel =>

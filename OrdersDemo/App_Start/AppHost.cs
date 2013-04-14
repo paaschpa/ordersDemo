@@ -41,8 +41,9 @@ namespace OrdersDemo.App_Start
             var userRep = new OrmLiteAuthRepository(container.Resolve<IDbConnectionFactory>());
 		    container.Register<IUserAuthRepository>(userRep);
             //container.Register<IRedisClientsManager>(new PooledRedisClientManager("localhost:6379"));
-            var appHarborRedis = "gzeepHs88o7V3SxuumKU@nidoking.ec2.myredis.com:8368";
-            container.Register<IRedisClientsManager>(new PooledRedisClientManager(3,60,appHarborRedis));
+            var appHarborRedis = "6KcXwQ4ohhzhQzYDw47z@nidoking.ec2.myredis.com:7812";
+            container.Register<IRedisClientsManager>(new PooledRedisClientManager(10,60,appHarborRedis));
+		    //container.Register<IRedisClientsManager>(new PooledRedisClientManager(10, 60, "localhost:6379"));
             container.Register<ICacheClient>(c =>(ICacheClient)c.Resolve<IRedisClientsManager>().GetCacheClient());
 
 		    //Set MVC to use the same Funq IOC as ServiceStack
@@ -50,7 +51,7 @@ namespace OrdersDemo.App_Start
 
             //https://github.com/ServiceStack/ServiceStack.Redis/wiki/RedisPubSub
             //start threads that subscribe to Redis channels for Pub/Sub
-            new OrderSubscribers().StartSubscriberThreads(container);
+            new OrderSubscribers(container).StartSubscriberThreads();
 
             //https://github.com/ServiceStack/ServiceStack/wiki/Authentication-and-authorization#userauth-persistence---the-iuserauthrepository
             //Use ServiceStacks authentication/authorization persistence

@@ -36,7 +36,7 @@
                             <li class="active">
                                 @{ 
                                     //TODO:hmmm, might be missing a better way to do this...
-                                    var key = SessionFeature.GetSessionKey();
+                                    var key = SessionFeature.GetSessionKey() ?? "";
                                     var sess = AppHost.Resolve<ICacheClient>().Get<AuthUserSession>(key);
                                     if (sess != null && sess.IsAuthenticated)
                                     {

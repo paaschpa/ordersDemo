@@ -8,7 +8,7 @@
 
 @Html.ValidationSummary(true, "Login was unsuccessful. Please correct the errors and try again.")
 @{
-var key = SessionFeature.GetSessionKey();
+var key = SessionFeature.GetSessionKey() ?? "";
 var sess = AppHost.Resolve<ICacheClient>().Get<AuthUserSession>(key);
 //Should you have logic in your views? No. Do I? Yes.
 //Does it bother me? A little bit. Enough to fix it? No

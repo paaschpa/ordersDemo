@@ -1,7 +1,11 @@
 ﻿var OrdersQueueCtrl = function ($scope, $http) {
 
-    var results = $http.get('/api/orderInQueue');
-    results.success(function (data) {
-        $scope.orders = data;
-    });
+    $scope.refreshGrid = function () {
+        var results = $http.get('/api/waitingfulfillment');
+        results.success(function (data) {
+            $scope.orders = data;
+        });
+    };
+
+    $scope.refreshGrid();
 }

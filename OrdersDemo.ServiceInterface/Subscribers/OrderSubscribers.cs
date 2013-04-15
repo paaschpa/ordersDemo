@@ -43,7 +43,8 @@ namespace OrdersDemo.ServiceInterface.Subscribers
                         var createOrderRequest = msg.FromJson<CreateOrder>();
                         var createOrderInQueue = new OrderInQueue
                         {
-                            CustomerName = createOrderRequest.CustomerName,
+                            CustomerName = createOrderRequest.CustomerFirstName,
+                            ItemName = createOrderRequest.ItemName,
                             Status = "New"
                         };
                         using (var service = _container.Resolve<OrderQueueService>())

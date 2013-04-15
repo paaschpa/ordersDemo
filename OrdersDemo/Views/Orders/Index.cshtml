@@ -25,7 +25,7 @@
             </thead>
             <tbody>
                 <tr ng-repeat="order in orders">
-                    <td>{{order.customerName}}</td> 
+                    <td>{{order.customerFirstName}} {{order.customerLastName}}</td> 
                     <td>{{order.itemName}}</td> 
                     <td>{{order.quantity}}</td> 
                 </tr>
@@ -39,7 +39,8 @@
                 <div class="control-group">
                     <label class="control-label">Customer</label>
                     <div class="controls">
-                        <input type="text" ng-model="newOrderCustomerName" placeholder="Customer Name"/> 
+                        <input type="text" ng-model="newOrderCustomerFirstName" placeholder="First Name" class="input-small"/> &nbsp;
+                        <input type="text" ng-model="newOrderCustomerLastName" placeholder="Last Name" class="input-small"/> 
                     </div>
                 </div>
                 <div class="control-group">

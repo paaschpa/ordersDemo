@@ -20,6 +20,7 @@
         <thead>
             <tr>
                 <th>Customer</th>
+                <th>Item</th>
                 <th>Status</th>
                 <th>Enter Date</th>
                 <th>Worker</th>
@@ -28,6 +29,7 @@
         <tbody>
             <tr ng-repeat="order in orders">
                 <td>{{order.customerName}}</td> 
+                <td>{{order.itemName}}</td> 
                 <td>{{order.status}}</td> 
                 <td>{{order.createdDate}}</td> 
                 <td>{{order.worker}}</td> 

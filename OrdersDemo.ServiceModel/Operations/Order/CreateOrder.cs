@@ -9,7 +9,8 @@ namespace OrdersDemo.ServiceModel.Operations
     [Route("/Orders", "POST")]
     public class CreateOrder : IReturn<Order>
     {
-        public string CustomerName { get; set; }
+        public string CustomerFirstName { get; set; }
+        public string CustomerLastName { get; set; }
         public string ItemName { get; set; }
         public int Quantity { get; set; }
     }

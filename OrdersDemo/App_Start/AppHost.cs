@@ -11,6 +11,7 @@ using ServiceStack.CacheAccess;
 using ServiceStack.Mvc;
 using ServiceStack.OrmLite;
 using ServiceStack.Redis;
+using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
 using ServiceStack.WebHost.Endpoints;
@@ -60,7 +61,7 @@ namespace OrdersDemo.App_Start
             //Create Tables for the demo
             using (var con = AppHostBase.Resolve<IDbConnectionFactory>().OpenDbConnection())
 		    {
-                con.CreateTable<Order>(false);
+                con.CreateTable<Order>();
                 con.CreateTable<Fulfillment>();
 		    }
 

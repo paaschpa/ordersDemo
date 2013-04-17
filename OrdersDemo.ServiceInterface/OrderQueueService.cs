@@ -19,8 +19,8 @@ namespace OrdersDemo.ServiceInterface
         {
             using (var con = RedisClientsManager.GetClient())
             {
-                return con.GetAllItemsFromList("urn:OrdersInQueue")
-                    .Select(x => JsonSerializer.DeserializeFromString<OrderInQueue>(x))
+                return con.GetAllEntriesFromHash("urn:OrdersInQueue")
+                    .Select(x => JsonSerializer.DeserializeFromString<OrderInQueue>(x.Value))
                     .ToList();
             }
         }
@@ -30,7 +30,7 @@ namespace OrdersDemo.ServiceInterface
             using (var con = RedisClientsManager.GetClient())
             {
                 request.CreatedDate = DateTime.Now;
-                con.AddItemToList("urn:OrdersInQueue", request.ToJson());
+                con.SetEntryInHash("urn:OrdersInQueue", request.OrderId.ToString(), request.ToJson());
 
                 return "Item Succesfully Added";
             }
@@ -41,18 +41,18 @@ namespace OrdersDemo.ServiceInterface
             using (var con = RedisClientsManager.GetClient())
             {
                 //not the right way to do this
-                var o = con.GetAllItemsFromList("urn:OrdersInQueue");
-                var queuedOrders = con.GetAllItemsFromList("urn:OrdersInQueue").Select(x => x.To<OrderInQueue>());
-                var orderToUpdate =
-                    queuedOrders.FirstOrDefault(x => x.ItemName == request.ItemName && x.Quantity == request.Quantity);
+                var orderToUpdateJson = con.GetValueFromHash("urn:OrdersInQueue", request.OrderId.ToString());
 
-                if (orderToUpdate != null)
+                if (!String.IsNullOrEmpty(orderToUpdateJson))
                 {
+                    var orderToUpdate = JsonSerializer.DeserializeFromString<OrderInQueue>(orderToUpdateJson);
                     orderToUpdate.Status = request.Status;
-                    con.Set("urn:OrdersInQueue", queuedOrders);
+                    orderToUpdate.Fulfiller = request.Fulfiller;
+                    con.SetEntryInHash("urn:OrdersInQueue", orderToUpdate.OrderId.ToString(), orderToUpdate.ToJson());
+                    return "Update Sucessful";
                 }
 
-                return "Update Successful";
+                return "Entry Not Found";
             }   
         }
     }

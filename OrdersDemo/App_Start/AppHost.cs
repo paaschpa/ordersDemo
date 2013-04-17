@@ -3,6 +3,7 @@ using System.Linq;
 using System.Configuration;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using Microsoft.AspNet.SignalR;
 using OrdersDemo.Models;
 using OrdersDemo.ServiceInterface;
 using OrdersDemo.ServiceInterface.Subscribers;
@@ -11,6 +12,7 @@ using ServiceStack.CacheAccess;
 using ServiceStack.Mvc;
 using ServiceStack.OrmLite;
 using ServiceStack.Redis;
+using ServiceStack.Redis.Messaging;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
@@ -46,6 +48,7 @@ namespace OrdersDemo.App_Start
             //container.Register<IRedisClientsManager>(new PooledRedisClientManager(10,60,appHarborRedis));
 		    container.Register<IRedisClientsManager>(new PooledRedisClientManager(10, 60, "localhost:6379"));
             container.Register<ICacheClient>(c =>(ICacheClient)c.Resolve<IRedisClientsManager>().GetCacheClient());
+
 
 		    //Set MVC to use the same Funq IOC as ServiceStack
 			ControllerBuilder.Current.SetControllerFactory(new FunqControllerFactory(container));

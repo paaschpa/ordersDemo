@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Microsoft.AspNet.SignalR;
 using OrdersDemo.ServiceModel;
 using OrdersDemo.ServiceModel.Operations;
 using ServiceStack.Common;
 using ServiceStack.OrmLite;
 using ServiceStack.Redis;
 using ServiceStack.ServiceInterface;
+using ServiceStack.ServiceInterface.Auth;
 using ServiceStack.Text;
 
 namespace OrdersDemo.ServiceInterface
@@ -47,13 +49,15 @@ namespace OrdersDemo.ServiceInterface
             {
                 var fulfillmentToUpdate = con.GetById<Fulfillment>(request.Id);
                 fulfillmentToUpdate.Status = request.Status;
+                fulfillmentToUpdate.Fulfiller = base.SessionAs<AuthUserSession>().UserName;
                 con.Update<Fulfillment>(fulfillmentToUpdate);
 
                 //publish message
                 using (var redisClient = redisClientManager.GetClient())
                 {
                     redisClient.PublishMessage("FulfillmentUpdate", fulfillmentToUpdate.ToJson());
-                }        
+                }
+
                 return fulfillmentToUpdate;
             }
         }

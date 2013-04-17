@@ -43,14 +43,9 @@ namespace OrdersDemo.ServiceInterface
                 //publish message
                 using (var redisClient = redisClientManager.GetClient())
                 {
-                    redisClient.PublishMessage("NewOrder", request.ToJson());
+                    redisClient.PublishMessage("NewOrder", newOrder.ToJson());
                 }
-                //Alert connections
-                var hub = GlobalHost.ConnectionManager.GetHubContext("GridHub");
-                if (hub != null)
-                {
-                    hub.Clients.All.refreshGrid("newOrder");
-                }
+ 
                 return newOrder;
             }
         }

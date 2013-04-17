@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using Microsoft.AspNet.SignalR;
 using OrdersDemo.ServiceModel;
 using OrdersDemo.ServiceModel.Operations;
 using ServiceStack.CacheAccess;
@@ -12,12 +13,10 @@ using ServiceStack.WebHost.Endpoints;
 
 namespace OrdersDemo.ServiceInterface.Subscribers
 {
-    public class FulfillmentSubscribers
+    public class FulfillmentSubscribers : SubscribersBase
     {
-        private Funq.Container _container;
-        public FulfillmentSubscribers(Funq.Container container)
+        public FulfillmentSubscribers(Funq.Container container) : base(container)
         {
-            _container = container;
         }
 
         public void StartSubscriberThreads() //need to resolve dependencies...
@@ -26,40 +25,28 @@ namespace OrdersDemo.ServiceInterface.Subscribers
             StartThread("FulfillmentUpdate", (channel, msg) =>
                     {
                         var fulfillmentRequest = msg.FromJson<Fulfillment>();
-                        var createFulfillment = new OrderInQueue 
+                        var updateOrderInQueue = new OrderInQueue 
                         {
+                            OrderId = fulfillmentRequest.OrderId,
                             ItemName = fulfillmentRequest.ItemName,
                             Quantity = fulfillmentRequest.Quantity,
-                            Status = fulfillmentRequest.Status
+                            Status = fulfillmentRequest.Status,
+                            Fulfiller = fulfillmentRequest.Fulfiller
                         };
-                        using (var service = _container.Resolve<OrderQueueService>())
+                        using (var service = Container.Resolve<OrderQueueService>())
                         {
-                            service.Put(createFulfillment);
+                            service.Put(updateOrderInQueue);
                         }
+
+                        //Alert connections
+                        var hub = GlobalHost.ConnectionManager.GetHubContext("GridHub");
+                        if (hub != null)
+                        {
+                            hub.Clients.All.refreshGrid("updateFulfillment");
+                        }
+
                     });
         }
 
-        private void StartThread(string subscribeToChannelName, Action<string, string> onMessage)
-        {
-            ThreadPool.QueueUserWorkItem(x =>
-            {
-                using (var redisConsumer = _container.Resolve<IRedisClientsManager>().GetClient())
-                using (var subscription = redisConsumer.CreateSubscription())
-                {
-                    subscription.OnSubscribe = channel =>
-                    {
-                        Console.WriteLine("listening for orders on channel {0}", channel);
-                    };
-                    subscription.OnUnSubscribe = channel =>
-                    {
-                        Console.WriteLine("UnSubscribed from '{0}'", channel);
-                    };
-
-                    subscription.OnMessage = onMessage;
-
-                    subscription.SubscribeToChannels(subscribeToChannelName); //blocking
-                }
-            });
-        }
     }
 }

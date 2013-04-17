@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="FulfillerService.cs" />
     <Compile Include="OrderQueueService.cs" />
+    <Compile Include="OrdersDemoServiceBase.cs" />
     <Compile Include="OrdersService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Subscribers\FulfillmentSubscribers.cs" />

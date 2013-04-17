@@ -15,51 +15,39 @@ using ServiceStack.Text;
 namespace OrdersDemo.ServiceInterface
 {
     [Authenticate]
-    public class FulfillmentService : Service
+    public class FulfillmentService : OrdersDemoServiceBase
     {
-        public IDbConnectionFactory DbConnectionFactory { get; set; }
-        public IRedisClientsManager redisClientManager { get; set; }
-
         public List<Fulfillment> Get(Fulfillment request)
         {
-            using (var con = DbConnectionFactory.OpenDbConnection())
-            {
-                var fulfillments = con.Select<Fulfillment>(f => f.OrderBy(x => x.Id));
-
-                return fulfillments;
-            }
+            var fulfillments = DbConnExec((con) => con.Select<Fulfillment>(f => f.OrderBy(x => x.Id)));
+            return fulfillments;
         }
 
         public Fulfillment Post(CreateFulfillment request)
         {
-            using (var con = DbConnectionFactory.OpenDbConnection())
-            {
-                var newFulfilllment = request.TranslateTo<Fulfillment>();
-                newFulfilllment.Status = "New";
+            var newFulfilllment = request.TranslateTo<Fulfillment>();
+            newFulfilllment.Status = "New";
 
-                con.Insert<Fulfillment>(newFulfilllment);
+            DbConnExec((con) => con.Insert<Fulfillment>(newFulfilllment));
 
-                return newFulfilllment;
-            }
+            return newFulfilllment;
         }
 
         public Fulfillment Put(UpdateFulfillment request)
         {
-            using (var con = DbConnectionFactory.OpenDbConnection())
-            {
-                var fulfillmentToUpdate = con.GetById<Fulfillment>(request.Id);
-                fulfillmentToUpdate.Status = request.Status;
-                fulfillmentToUpdate.Fulfiller = base.SessionAs<AuthUserSession>().UserName;
-                con.Update<Fulfillment>(fulfillmentToUpdate);
-
-                //publish message
-                using (var redisClient = redisClientManager.GetClient())
+            Fulfillment fulfillmentToUpdate = null;
+            DbConnExecTransaction((con) =>
                 {
-                    redisClient.PublishMessage("FulfillmentUpdate", fulfillmentToUpdate.ToJson());
-                }
+                    fulfillmentToUpdate = con.GetById<Fulfillment>(request.Id);
+                    fulfillmentToUpdate.Status = request.Status;
+                    fulfillmentToUpdate.Fulfiller = base.SessionAs<AuthUserSession>().UserName;
+                    con.Update<Fulfillment>(fulfillmentToUpdate);
+                });
+   
+                //publish message
+            RedisExec((redisCon) => redisCon.PublishMessage("FulfillmentUpdate", fulfillmentToUpdate.ToJson()));
 
-                return fulfillmentToUpdate;
-            }
+            return fulfillmentToUpdate;
         }
     }
 }

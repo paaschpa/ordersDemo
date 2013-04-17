@@ -6,7 +6,9 @@ using OrdersDemo.ServiceModel;
 using OrdersDemo.ServiceModel.Operations;
 using ServiceStack.Common;
 using ServiceStack.OrmLite;
+using ServiceStack.Redis;
 using ServiceStack.ServiceInterface;
+using ServiceStack.Text;
 
 namespace OrdersDemo.ServiceInterface
 {
@@ -14,6 +16,7 @@ namespace OrdersDemo.ServiceInterface
     public class FulfillmentService : Service
     {
         public IDbConnectionFactory DbConnectionFactory { get; set; }
+        public IRedisClientsManager redisClientManager { get; set; }
 
         public List<Fulfillment> Get(Fulfillment request)
         {
@@ -38,13 +41,20 @@ namespace OrdersDemo.ServiceInterface
             }
         }
 
-        public Fulfillment Put(Fulfillment request)
+        public Fulfillment Put(UpdateFulfillment request)
         {
             using (var con = DbConnectionFactory.OpenDbConnection())
             {
-                var updatedFulfillment = request.TranslateTo<Fulfillment>();
-                con.Update<Fulfillment>(updatedFulfillment);
-                return updatedFulfillment;
+                var fulfillmentToUpdate = con.GetById<Fulfillment>(request.Id);
+                fulfillmentToUpdate.Status = request.Status;
+                con.Update<Fulfillment>(fulfillmentToUpdate);
+
+                //publish message
+                using (var redisClient = redisClientManager.GetClient())
+                {
+                    redisClient.PublishMessage("FulfillmentUpdate", fulfillmentToUpdate.ToJson());
+                }        
+                return fulfillmentToUpdate;
             }
         }
     }

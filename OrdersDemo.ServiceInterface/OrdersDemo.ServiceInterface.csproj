@@ -68,6 +68,7 @@
     <Compile Include="OrderQueueService.cs" />
     <Compile Include="OrdersService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Subscribers\FulfillmentSubscribers.cs" />
     <Compile Include="Subscribers\OrderSubscribers.cs" />
   </ItemGroup>
   <ItemGroup>

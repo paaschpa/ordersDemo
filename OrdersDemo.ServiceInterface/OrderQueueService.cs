@@ -35,5 +35,25 @@ namespace OrdersDemo.ServiceInterface
                 return "Item Succesfully Added";
             }
         }
+
+        public object Put(OrderInQueue request)
+        {
+            using (var con = RedisClientsManager.GetClient())
+            {
+                //not the right way to do this
+                var o = con.GetAllItemsFromList("urn:OrdersInQueue");
+                var queuedOrders = con.GetAllItemsFromList("urn:OrdersInQueue").Select(x => x.To<OrderInQueue>());
+                var orderToUpdate =
+                    queuedOrders.FirstOrDefault(x => x.ItemName == request.ItemName && x.Quantity == request.Quantity);
+
+                if (orderToUpdate != null)
+                {
+                    orderToUpdate.Status = request.Status;
+                    con.Set("urn:OrdersInQueue", queuedOrders);
+                }
+
+                return "Update Successful";
+            }   
+        }
     }
 }

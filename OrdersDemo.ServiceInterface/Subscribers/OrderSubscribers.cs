@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using Microsoft.AspNet.SignalR;
 using OrdersDemo.ServiceModel;
 using OrdersDemo.ServiceModel.Operations;
 using ServiceStack.CacheAccess;
@@ -12,12 +13,10 @@ using ServiceStack.WebHost.Endpoints;
 
 namespace OrdersDemo.ServiceInterface.Subscribers
 {
-    public class OrderSubscribers
+    public class OrderSubscribers : SubscribersBase
     {
-        private Funq.Container _container;
-        public OrderSubscribers(Funq.Container container)
+        public OrderSubscribers(Funq.Container container) : base(container)
         {
-            _container = container;
         }
 
         public void StartSubscriberThreads() //need to resolve dependencies...
@@ -25,55 +24,49 @@ namespace OrdersDemo.ServiceInterface.Subscribers
             //Create a fulfillment when an Order is posted
             StartThread("NewOrder", (channel, msg) =>
                     {
-                        var createOrderRequest = msg.FromJson<CreateOrder>();
+                        var createOrderRequest = msg.FromJson<Order>();
                         var createFulfillment = new CreateFulfillment
                         {
+                            OrderId = createOrderRequest.Id,
                             ItemName = createOrderRequest.ItemName,
                             Quantity = createOrderRequest.Quantity
                         };
-                        using (var service = _container.Resolve<FulfillmentService>())
+                        using (var service = Container.Resolve<FulfillmentService>())
                         {
                             service.Post(createFulfillment);
+                        }
+
+                        //Alert connections
+                        var hub = GlobalHost.ConnectionManager.GetHubContext("GridHub");
+                        if (hub != null)
+                        {
+                            hub.Clients.All.refreshGrid("newOrder");
                         }
                     });
 
             //Create an Order in the Queue when an Order is posted
             StartThread("NewOrder", (channel, msg) =>
                     {
-                        var createOrderRequest = msg.FromJson<CreateOrder>();
+                        var createOrderRequest = msg.FromJson<Order>();
                         var createOrderInQueue = new OrderInQueue
                         {
-                            CustomerName = createOrderRequest.CustomerName,
+                            OrderId = createOrderRequest.Id,
+                            CustomerName = createOrderRequest.CustomerFirstName,
+                            ItemName = createOrderRequest.ItemName,
                             Status = "New"
                         };
-                        using (var service = _container.Resolve<OrderQueueService>())
+                        using (var service = Container.Resolve<OrderQueueService>())
                         {
                             service.Post(createOrderInQueue);
                         }
+
+                        //Alert connections
+                        var hub = GlobalHost.ConnectionManager.GetHubContext("GridHub");
+                        if (hub != null)
+                        {
+                            hub.Clients.All.refreshGrid("newOrder");
+                        }
                     });
-        }
-
-        private void StartThread(string subscribeToChannelName, Action<string, string> onMessage)
-        {
-            ThreadPool.QueueUserWorkItem(x =>
-            {
-                using (var redisConsumer = _container.Resolve<IRedisClientsManager>().GetClient())
-                using (var subscription = redisConsumer.CreateSubscription())
-                {
-                    subscription.OnSubscribe = channel =>
-                    {
-                        Console.WriteLine("listening for orders on channel {0}", channel);
-                    };
-                    subscription.OnUnSubscribe = channel =>
-                    {
-                        Console.WriteLine("UnSubscribed from '{0}'", channel);
-                    };
-
-                    subscription.OnMessage = onMessage;
-
-                    subscription.SubscribeToChannels(subscribeToChannelName); //blocking
-                }
-            });
         }
     }
 }

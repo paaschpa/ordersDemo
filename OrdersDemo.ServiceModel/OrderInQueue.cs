@@ -6,10 +6,14 @@ using ServiceStack.ServiceHost;
 
 namespace OrdersDemo.ServiceModel
 {
-    [Route("/OrderInQueue", "GET")]
+    [Route("/WaitingFulfillment", "GET")]
     public class OrderInQueue
     {
+        public int OrderId { get; set; }
         public string CustomerName { get; set; }
+        public string ItemName { get; set; }
+        public int Quantity { get; set; }
+        public string Fulfiller { get; set; }
         public string Status { get; set; }
         public DateTime CreatedDate { get; set; }
     }

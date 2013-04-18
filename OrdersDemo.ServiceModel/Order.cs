@@ -12,7 +12,8 @@ namespace OrdersDemo.ServiceModel
     {
         [AutoIncrement]
         public int Id { get; set; }
-        public string CustomerName { get; set; }
+        public string CustomerFirstName { get; set; }
+        public string CustomerLastName { get; set; }
         public string ItemName { get; set; }
         public int Quantity { get; set; }
         public string Status { get; set; }

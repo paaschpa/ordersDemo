@@ -9,6 +9,7 @@ namespace OrdersDemo.ServiceModel.Operations
     [Route("/Fulfillment", "POST")]
     public class CreateFulfillment : IReturn<Fulfillment>
     {
+        public int OrderId { get; set; }
         public string ItemName { get; set; }
         public int Quantity { get; set; }
     }

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Configuration;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using Microsoft.AspNet.SignalR;
 using OrdersDemo.Models;
 using OrdersDemo.ServiceInterface;
 using OrdersDemo.ServiceInterface.Subscribers;
@@ -11,6 +12,8 @@ using ServiceStack.CacheAccess;
 using ServiceStack.Mvc;
 using ServiceStack.OrmLite;
 using ServiceStack.Redis;
+using ServiceStack.Redis.Messaging;
+using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
 using ServiceStack.WebHost.Endpoints;
@@ -41,10 +44,10 @@ namespace OrdersDemo.App_Start
             var userRep = new OrmLiteAuthRepository(container.Resolve<IDbConnectionFactory>());
 		    container.Register<IUserAuthRepository>(userRep);
             //container.Register<IRedisClientsManager>(new PooledRedisClientManager("localhost:6379"));
-            var appHarborRedis = "6KcXwQ4ohhzhQzYDw47z@nidoking.ec2.myredis.com:7812";
-            container.Register<IRedisClientsManager>(new PooledRedisClientManager(10,60,appHarborRedis));
-		    //container.Register<IRedisClientsManager>(new PooledRedisClientManager(10, 60, "localhost:6379"));
+		    var redisCon = ConfigurationManager.AppSettings["redisCon"].ToString();
+		    container.Register<IRedisClientsManager>(new PooledRedisClientManager(10, 60, redisCon));
             container.Register<ICacheClient>(c =>(ICacheClient)c.Resolve<IRedisClientsManager>().GetCacheClient());
+
 
 		    //Set MVC to use the same Funq IOC as ServiceStack
 			ControllerBuilder.Current.SetControllerFactory(new FunqControllerFactory(container));
@@ -52,6 +55,7 @@ namespace OrdersDemo.App_Start
             //https://github.com/ServiceStack/ServiceStack.Redis/wiki/RedisPubSub
             //start threads that subscribe to Redis channels for Pub/Sub
             new OrderSubscribers(container).StartSubscriberThreads();
+            new FulfillmentSubscribers(container).StartSubscriberThreads();
 
             //https://github.com/ServiceStack/ServiceStack/wiki/Authentication-and-authorization#userauth-persistence---the-iuserauthrepository
             //Use ServiceStacks authentication/authorization persistence

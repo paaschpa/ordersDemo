@@ -7,7 +7,8 @@
 
     $scope.addOrder = function () {
         var newOrder = {
-            'customerName': $scope.newOrderCustomerName,
+            'customerFirstName': $scope.newOrderCustomerFirstName,
+            'customerLastName': $scope.newOrderCustomerLastName,
             'itemName': $scope.newOrderItemName,
             'quantity': $scope.newOrderQuantity
         };

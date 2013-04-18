@@ -6,10 +6,10 @@ using ServiceStack.ServiceHost;
 
 namespace OrdersDemo.ServiceModel.Operations
 {
-    [Route("/Fulfillment", "POST")]
+    [Route("/Fulfillment", "PUT")]
     public class UpdateFulfillment
     {
-        public int FulfillmentId { get; set; }
+        public int Id { get; set; }
         public string Status { get; set; }
     }
 }

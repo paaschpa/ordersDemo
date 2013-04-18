@@ -13,4 +13,3 @@ _ReSharper.*
 *.sln.cache
 .sass-cache/
 *.orig
-Web.config

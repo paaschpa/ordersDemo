@@ -1,4 +1,7 @@
-﻿var OrderCtrl = function ($scope, $http) {
+﻿
+
+
+var OrderCtrl = function ($scope, $http) {
 
     var results = $http.get('api/orders');
     results.success(function (data) {

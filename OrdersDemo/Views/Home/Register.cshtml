@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "Register";
+}
+
+<script src='@Href("/Scripts/app/appRegistration.js")'></script>
+Sign up and start fulfilling Orders. Points are awarded to Fulfillers based on Item and Quantity.<br/>
+This is only for Demo purposes and the data will likely be purged often.
+<div ng-app>
+    <div ng-controller="RegistrationCtrl">
+        <div id="error" class="hidden">
+            <p class="text-error">NOOOOOOOO! Something went wrong! <br/>
+                {{errorMsg}}
+            </p>
+        </div>
+        <form id="RegistrationForm" class="form-stacked fade-when-loading">
+            <div class="clearfix">
+                <input class="input-medium" name="email" type="text" placeholder="UserName" ng-model="userName" />
+            </div>
+            <div class="clearfix">
+                <input class="input-medium" name="password" type="password" placeholder="Password" ng-model="password" />
+            </div>
+    
+            <div class="actions">
+                <button class="btn" type="submit" ng-click="register()">Sign up</button>
+            </div>
+        </form> 
+    <p>&nbsp;</p>
+        <div id="RegistrationSuccess" class="hidden">Success Start <a href="/Fulfillments">Fulfilling Now!</a></div>
+    </div>
+</div>

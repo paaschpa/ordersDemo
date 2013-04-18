@@ -9,6 +9,7 @@ using OrdersDemo.ServiceInterface;
 using OrdersDemo.ServiceInterface.Subscribers;
 using OrdersDemo.ServiceModel;
 using ServiceStack.CacheAccess;
+using ServiceStack.FluentValidation;
 using ServiceStack.Mvc;
 using ServiceStack.OrmLite;
 using ServiceStack.Redis;
@@ -37,6 +38,13 @@ namespace OrdersDemo.App_Start
                     () => new AuthUserSession(),
                     new IAuthProvider[] { new CredentialsAuthProvider() }
                 ) {HtmlRedirect = null});
+
+            //Plugins.Add(new RegistrationFeature());
+            //Why am I not simply doing the above? Because I want to use my own RegistrationValidation 
+            //that doesn't require an email address. 
+            this.RegisterService<RegistrationService>("/register");
+            this.RegisterAs<MyRegistrationValidator, IValidator<Registration>>();
+            //...and I'm done
 
             var dataFilePath = AppDomain.CurrentDomain.GetData("DataDirectory").ToString() + "\\data.db";
 		    container.Register<IDbConnectionFactory>(new OrmLiteConnectionFactory(dataFilePath, SqliteDialect.Provider));

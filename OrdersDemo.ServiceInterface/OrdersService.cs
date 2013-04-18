@@ -18,36 +18,27 @@ using ServiceStack.Text;
 
 namespace OrdersDemo.ServiceInterface
 {
-    public class OrdersService : Service
+    public class OrdersService : OrdersDemoServiceBase
     {
-        public IDbConnectionFactory dbConn { get; set; }
-        public IRedisClientsManager redisClientManager { get; set; }
-
         public List<Order> Get(Order request)
         {
-            using(var conn = dbConn.OpenDbConnection())
-            {
-                var orders = conn.Select<Order>(o => o.OrderBy(x => x.Id));
-                return orders;
-            }
+            var orders = DbConnExec((con) => con.Select<Order>(o => o.OrderBy(x => x.Id)));
+            return orders;
         }
 
         public Order Post(CreateOrder request)
         {
-            using (var conn = dbConn.OpenDbConnection())
-            {
-                var newOrder = request.TranslateTo<Order>();
-                newOrder.Status = "New";
-                conn.Insert(newOrder);
-                newOrder.Id = (int)conn.GetLastInsertId();
-                //publish message
-                using (var redisClient = redisClientManager.GetClient())
+            var newOrder = request.TranslateTo<Order>();
+            newOrder.Status = "New";
+            DbConnExecTransaction((con) =>
                 {
-                    redisClient.PublishMessage("NewOrder", newOrder.ToJson());
-                }
- 
-                return newOrder;
-            }
+                    con.Insert(newOrder);
+                    newOrder.Id = (int) con.GetLastInsertId();
+                });
+
+            RedisExec((redisCon) => redisCon.PublishMessage("NewOrder", newOrder.ToJson()));
+
+            return newOrder;
         }
     }
 }

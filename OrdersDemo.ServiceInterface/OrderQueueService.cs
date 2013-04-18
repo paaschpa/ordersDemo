@@ -11,49 +11,45 @@ using ServiceStack.Text;
 
 namespace OrdersDemo.ServiceInterface
 {
-    public class OrderQueueService : Service
+    public class OrderQueueService : OrdersDemoServiceBase
     {
-        public IRedisClientsManager RedisClientsManager { get; set; }
 
         public List<OrderInQueue> Get (OrderInQueue request)
         {
-            using (var con = RedisClientsManager.GetClient())
-            {
-                return con.GetAllEntriesFromHash("urn:OrdersInQueue")
-                    .Select(x => JsonSerializer.DeserializeFromString<OrderInQueue>(x.Value))
-                    .ToList();
-            }
+            var ordersInQueue = RedisExec((redisCon) => redisCon.GetAllEntriesFromHash("urn:OrdersInQueue")
+                                            .Select(x => x.Value.FromJson<OrderInQueue>())
+                                            .ToList());
+
+            return ordersInQueue;
         }
 
         public object Post(OrderInQueue request)
         {
-            using (var con = RedisClientsManager.GetClient())
-            {
-                request.CreatedDate = DateTime.Now;
-                con.SetEntryInHash("urn:OrdersInQueue", request.OrderId.ToString(), request.ToJson());
-
-                return "Item Succesfully Added";
-            }
+            request.CreatedDate = DateTime.Now;
+            RedisExec(
+                (redisCon) => redisCon.SetEntryInHash("urn:OrdersInQueue", request.OrderId.ToString(), request.ToJson()));
+            
+            return "Item Succesfully Added";
         }
 
         public object Put(OrderInQueue request)
         {
-            using (var con = RedisClientsManager.GetClient())
-            {
-                //not the right way to do this
-                var orderToUpdateJson = con.GetValueFromHash("urn:OrdersInQueue", request.OrderId.ToString());
-
-                if (!String.IsNullOrEmpty(orderToUpdateJson))
+            var result = RedisExec((redisCon) =>
                 {
-                    var orderToUpdate = JsonSerializer.DeserializeFromString<OrderInQueue>(orderToUpdateJson);
-                    orderToUpdate.Status = request.Status;
-                    orderToUpdate.Fulfiller = request.Fulfiller;
-                    con.SetEntryInHash("urn:OrdersInQueue", orderToUpdate.OrderId.ToString(), orderToUpdate.ToJson());
-                    return "Update Sucessful";
-                }
+                    var orderToUpdateJson = redisCon.GetValueFromHash("urn:OrdersInQueue", request.OrderId.ToString());
 
-                return "Entry Not Found";
-            }   
-        }
+                    if (!String.IsNullOrEmpty(orderToUpdateJson))
+                    {
+                        var orderToUpdate = JsonSerializer.DeserializeFromString<OrderInQueue>(orderToUpdateJson);
+                        orderToUpdate.Status = request.Status;
+                        orderToUpdate.Fulfiller = request.Fulfiller;
+                        redisCon.SetEntryInHash("urn:OrdersInQueue", orderToUpdate.OrderId.ToString(), orderToUpdate.ToJson());
+                        return "Update Successful";
+                    }
+                    return "Entry Not Found";
+                });
+
+            return result;
+        }   
     }
 }

@@ -44,9 +44,8 @@ namespace OrdersDemo.App_Start
             var userRep = new OrmLiteAuthRepository(container.Resolve<IDbConnectionFactory>());
 		    container.Register<IUserAuthRepository>(userRep);
             //container.Register<IRedisClientsManager>(new PooledRedisClientManager("localhost:6379"));
-            var appHarborRedis = "6KcXwQ4ohhzhQzYDw47z@nidoking.ec2.myredis.com:7812";
-            //container.Register<IRedisClientsManager>(new PooledRedisClientManager(10,60,appHarborRedis));
-		    container.Register<IRedisClientsManager>(new PooledRedisClientManager(10, 60, "localhost:6379"));
+		    var redisCon = ConfigurationManager.AppSettings["redisCon"].ToString();
+		    container.Register<IRedisClientsManager>(new PooledRedisClientManager(10, 60, redisCon));
             container.Register<ICacheClient>(c =>(ICacheClient)c.Resolve<IRedisClientsManager>().GetCacheClient());
 
 

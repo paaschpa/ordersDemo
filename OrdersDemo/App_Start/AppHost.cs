@@ -43,7 +43,7 @@ namespace OrdersDemo.App_Start
 
             var userRep = new OrmLiteAuthRepository(container.Resolve<IDbConnectionFactory>());
 		    container.Register<IUserAuthRepository>(userRep);
-            var redisCon = ConfigurationManager.AppSettings["redisUrl"].ToString();
+            var redisCon = ConfigurationManager.AppSettings["MYREDIS_URL"].ToString();
 		    container.Register<IRedisClientsManager>(new PooledRedisClientManager(10, 60, redisCon));
             container.Register<ICacheClient>(c =>(ICacheClient)c.Resolve<IRedisClientsManager>().GetCacheClient());
 

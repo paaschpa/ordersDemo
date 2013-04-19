@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -15,7 +16,9 @@ namespace OrdersDemo.Controllers
         [Authenticate]
         public ActionResult Index()
         {
-            return View();
+            dynamic viewModel = new ExpandoObject();
+            viewModel.UserName = this.AuthSession.UserName;
+            return View(viewModel);
         }
 
         public override ActionResult AuthenticationErrorResult

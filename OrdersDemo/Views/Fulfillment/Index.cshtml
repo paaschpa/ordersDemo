@@ -10,11 +10,14 @@
             var scope = angular.element("#fulfillmentController").scope();
             scope.updateGrid(fulfillment);
         };
-        chat.client.addToGrid = function(fulfillment) {
+        chat.client.addToGrid = function (fulfillment) {
             var scope = angular.element("#fulfillmentController").scope();
             scope.addToGrid(fulfillment);
         };
         $.connection.hub.start();
+
+        angular.element("#fulfillmentController").scope().setFulfiller('@Model.UserName');
+
     });
 </script>
 <div ng-app>

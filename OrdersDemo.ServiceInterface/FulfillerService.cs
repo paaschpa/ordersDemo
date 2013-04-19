@@ -19,7 +19,10 @@ namespace OrdersDemo.ServiceInterface
     {
         public List<Fulfillment> Get(Fulfillment request)
         {
-            var fulfillments = DbConnExec((con) => con.Select<Fulfillment>(f => f.OrderBy(x => x.Id)));
+            var ev = OrmLiteConfig.DialectProvider.ExpressionVisitor<Fulfillment>();
+            ev.Where(f => f.Status != "Completed").OrderBy(f => f.Id);
+
+            var fulfillments = DbConnExec((con) => con.Select<Fulfillment>(ev));
             return fulfillments;
         }
 
@@ -43,6 +46,10 @@ namespace OrdersDemo.ServiceInterface
             DbConnExecTransaction((con) =>
                 {
                     fulfillmentToUpdate = con.GetById<Fulfillment>(request.Id);
+                    if (request.Status == "Start" && !String.IsNullOrEmpty(fulfillmentToUpdate.Fulfiller))
+                    {
+                        throw new Exception("Already Started!");
+                    }
                     fulfillmentToUpdate.Status = request.Status;
                     fulfillmentToUpdate.Fulfiller = base.SessionAs<AuthUserSession>().UserName;
                     con.Update<Fulfillment>(fulfillmentToUpdate);

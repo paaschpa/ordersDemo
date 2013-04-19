@@ -1,6 +1,7 @@
 ﻿var OrderCtrl = function ($scope, $http) {
 
     $scope.itemSets = items; //global variable...*shrug*
+    $scope.message = ''; //start out empty
 
     var results = $http.get('api/orders');
     results.success(function (data) {
@@ -27,8 +28,16 @@
             'quantity': $scope.newOrderQuantity
         };
 
-        $http.post('/api/orders', newOrder);
-        //$scope.orders.push(newOrder);
+        $http.post('/api/orders', newOrder)
+            .success(function (data) {
+                console.log(data);
+                $scope.message = 'Order for ' + data.itemName + ' successful.';
+            })
+            .error(function (data) {
+                console.log(data);
+                $scope.message = data.responseStatus.message;
+            });
+
         $('#modalOrders').modal('hide');
     };
 }

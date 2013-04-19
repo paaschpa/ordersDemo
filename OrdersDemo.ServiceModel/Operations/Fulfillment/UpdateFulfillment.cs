@@ -10,6 +10,7 @@ namespace OrdersDemo.ServiceModel.Operations
     public class UpdateFulfillment
     {
         public int Id { get; set; }
+        public string Fulfiller { get; set; }
         public string Status { get; set; }
     }
 }

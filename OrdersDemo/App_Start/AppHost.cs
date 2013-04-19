@@ -7,6 +7,7 @@ using Microsoft.AspNet.SignalR;
 using OrdersDemo.Models;
 using OrdersDemo.ServiceInterface;
 using OrdersDemo.ServiceInterface.Subscribers;
+using OrdersDemo.ServiceInterface.Validators;
 using OrdersDemo.ServiceModel;
 using ServiceStack.CacheAccess;
 using ServiceStack.FluentValidation;
@@ -17,6 +18,7 @@ using ServiceStack.Redis.Messaging;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
+using ServiceStack.ServiceInterface.Validation;
 using ServiceStack.WebHost.Endpoints;
 
 [assembly: WebActivator.PreApplicationStartMethod(typeof(OrdersDemo.App_Start.AppHost), "Start")]
@@ -39,12 +41,11 @@ namespace OrdersDemo.App_Start
                     new IAuthProvider[] { new CredentialsAuthProvider() }
                 ) {HtmlRedirect = null});
 
-            //Plugins.Add(new RegistrationFeature());
-            //Why am I not simply doing the above? Because I want to use my own RegistrationValidation 
-            //that doesn't require an email address. 
-            this.RegisterService<RegistrationService>("/register");
+            Plugins.Add(new RegistrationFeature());
             this.RegisterAs<MyRegistrationValidator, IValidator<Registration>>();
-            //...and I'm done
+            
+            Plugins.Add(new ValidationFeature());
+            container.RegisterValidators(typeof(CreateOrderValidator).Assembly);
 
             var dataFilePath = AppDomain.CurrentDomain.GetData("DataDirectory").ToString() + "\\data.db";
 		    container.Register<IDbConnectionFactory>(new OrmLiteConnectionFactory(dataFilePath, SqliteDialect.Provider));

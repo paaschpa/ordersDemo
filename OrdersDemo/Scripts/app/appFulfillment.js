@@ -30,7 +30,7 @@
             order.status = 'Start';
             $http.put('/api/fulfillment', order);
             el.attr('disabled', true);
-            window.setTimeout(function () {
+            var t = window.setTimeout(function () {
                 el.attr('disabled', false);
             }, 1000 * order.quantity);
             return;
@@ -42,10 +42,23 @@
         }
     };
 
+    $scope.addToGrid = function (fulfillment) {
+        $scope.$apply(function () {
+            var newFulfillment = { 
+                id:fulfillment.Id, 
+                orderId:fulfillment.OrderId, 
+                itemName:fulfillment.ItemName, 
+                quantity:fulfillment.Quantity, 
+                status:fulfillment.Status 
+            };
+            $scope.fulfillments.push(newFulfillment);
+        });
+    };
+
     $scope.updateGrid = function (order) {
         for (var i = 0; i < $scope.fulfillments.length; i++) {
             if (order.OrderId == $scope.fulfillments[i].orderId) {
-                $scope.$apply(function() {
+                $scope.$apply(function () {
                     $scope.fulfillments[i].status = order.Status;
                     $scope.fulfillments[i].fulfiller = order.Fulfiller;
                 });

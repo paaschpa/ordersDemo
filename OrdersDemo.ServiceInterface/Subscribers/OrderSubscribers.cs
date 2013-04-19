@@ -24,6 +24,8 @@ namespace OrdersDemo.ServiceInterface.Subscribers
             //Create a fulfillment when an Order is posted
             StartThread("NewOrder", (channel, msg) =>
                     {
+                        Fulfillment newFulfillment;
+                        
                         var createOrderRequest = msg.FromJson<Order>();
                         var createFulfillment = new CreateFulfillment
                         {
@@ -33,14 +35,14 @@ namespace OrdersDemo.ServiceInterface.Subscribers
                         };
                         using (var service = Container.Resolve<FulfillmentService>())
                         {
-                            service.Post(createFulfillment);
+                            newFulfillment = service.Post(createFulfillment);
                         }
 
                         //Alert connections
                         var hub = GlobalHost.ConnectionManager.GetHubContext("GridHub");
                         if (hub != null)
                         {
-                            hub.Clients.All.refreshGrid("newOrder");
+                            hub.Clients.All.addToGrid(newFulfillment);
                         }
                     });
 

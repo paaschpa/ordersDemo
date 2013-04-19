@@ -10,6 +10,10 @@
             var scope = angular.element("#fulfillmentController").scope();
             scope.updateGrid(order);
         };
+        chat.client.addToGrid = function(fulfillment) {
+            var scope = angular.element("#fulfillmentController").scope();
+            scope.addToGrid(fulfillment);
+        };
         $.connection.hub.start();
     });
 </script>

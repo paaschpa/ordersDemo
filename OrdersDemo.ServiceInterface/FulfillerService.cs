@@ -28,7 +28,11 @@ namespace OrdersDemo.ServiceInterface
             var newFulfilllment = request.TranslateTo<Fulfillment>();
             newFulfilllment.Status = "New";
 
-            DbConnExec((con) => con.Insert<Fulfillment>(newFulfilllment));
+            DbConnExec((con) =>
+                {
+                    con.Insert<Fulfillment>(newFulfilllment);
+                    newFulfilllment.Id = (int)con.GetLastInsertId();
+                });
 
             return newFulfilllment;
         }

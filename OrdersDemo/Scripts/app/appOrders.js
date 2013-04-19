@@ -16,7 +16,7 @@ var OrderCtrl = function ($scope, $http) {
             'quantity': $scope.newOrderQuantity
         };
 
-        $http.post('api/orders', newOrder);
+        $http.post('/api/orders', newOrder);
         $scope.orders.push(newOrder);
         $('#modalOrders').modal('hide');
     };

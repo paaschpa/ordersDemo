@@ -42,7 +42,7 @@ namespace OrdersDemo.ServiceInterface.Subscribers
                         var hub = GlobalHost.ConnectionManager.GetHubContext("GridHub");
                         if (hub != null)
                         {
-                            hub.Clients.All.refreshGrid("updateFulfillment");
+                            hub.Clients.All.updateGrid(updateOrderInQueue);
                         }
 
                     });

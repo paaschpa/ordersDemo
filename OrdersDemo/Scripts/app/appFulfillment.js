@@ -45,11 +45,14 @@
     $scope.updateGrid = function (order) {
         for (var i = 0; i < $scope.fulfillments.length; i++) {
             if (order.OrderId == $scope.fulfillments[i].orderId) {
-                $scope.fulfillments[i].status = order.Status;
-                $scope.fulfillments[i].fulfiller = order.Fulfiller;
-                return;
+                $scope.$apply(function() {
+                    $scope.fulfillments[i].status = order.Status;
+                    $scope.fulfillments[i].fulfiller = order.Fulfiller;
+                });
+                break;
             }
         }
-    }
+        return;
+    };
 
 }

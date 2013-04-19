@@ -33,7 +33,7 @@
                 <td>{{order.fulfiller}}</td> 
                 <td>{{order.status}}</td> 
                 <td>{{order.disable}}</td> 
-                <td><button id="{{order.id}}" class="btn btn-success" ng-model="button" ng-click="changeState(order)" ng-disabled="{{order.disable}}">{{getButtonText(order.status)}}</button></td> 
+                <td><button id="{{order.id}}" class="btn btn-success" ng-click="changeState(order)">{{getButtonText(order.status)}}</button></td> 
             </tr>
         </tbody>
     </table>

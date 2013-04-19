@@ -2,14 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using Microsoft.AspNet.SignalR;
 using OrdersDemo.ServiceModel;
 using OrdersDemo.ServiceModel.Operations;
-using ServiceStack.CacheAccess;
-using ServiceStack.Redis;
 using ServiceStack.Text;
-using ServiceStack.WebHost.Endpoints;
 
 namespace OrdersDemo.ServiceInterface.Subscribers
 {

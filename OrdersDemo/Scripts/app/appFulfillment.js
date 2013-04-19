@@ -55,12 +55,12 @@
         });
     };
 
-    $scope.updateGrid = function (order) {
+    $scope.updateGrid = function (fulfillment) {
         for (var i = 0; i < $scope.fulfillments.length; i++) {
-            if (order.OrderId == $scope.fulfillments[i].orderId) {
+            if (fulfillment.Id == $scope.fulfillments[i].Id) {
                 $scope.$apply(function () {
-                    $scope.fulfillments[i].status = order.Status;
-                    $scope.fulfillments[i].fulfiller = order.Fulfiller;
+                    $scope.fulfillments[i].status = fulfillment.Status;
+                    $scope.fulfillments[i].fulfiller = fulfillment.Fulfiller;
                 });
                 break;
             }

@@ -48,8 +48,11 @@ namespace OrdersDemo.ServiceInterface
                     con.Update<Fulfillment>(fulfillmentToUpdate);
                 });
    
-                //publish message
-            RedisExec((redisCon) => redisCon.PublishMessage("FulfillmentUpdate", fulfillmentToUpdate.ToJson()));
+                var hub = GlobalHost.ConnectionManager.GetHubContext("GridHub");
+                if (hub != null)
+                {
+                    hub.Clients.All.updateGrid(fulfillmentToUpdate);
+                }
 
             return fulfillmentToUpdate;
         }

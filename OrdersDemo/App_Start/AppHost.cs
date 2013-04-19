@@ -61,7 +61,6 @@ namespace OrdersDemo.App_Start
             //https://github.com/ServiceStack/ServiceStack.Redis/wiki/RedisPubSub
             //start threads that subscribe to Redis channels for Pub/Sub
             new OrderSubscribers(container).StartSubscriberThreads();
-            new FulfillmentSubscribers(container).StartSubscriberThreads();
 
             //https://github.com/ServiceStack/ServiceStack/wiki/Authentication-and-authorization#userauth-persistence---the-iuserauthrepository
             //Use ServiceStacks authentication/authorization persistence

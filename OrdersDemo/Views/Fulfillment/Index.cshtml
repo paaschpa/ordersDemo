@@ -6,9 +6,9 @@
 <script>
     $(document).ready(function () {
         var chat = $.connection.gridHub;
-        chat.client.updateGrid = function (order) {
+        chat.client.updateGrid = function (fulfillment) {
             var scope = angular.element("#fulfillmentController").scope();
-            scope.updateGrid(order);
+            scope.updateGrid(fulfillment);
         };
         chat.client.addToGrid = function(fulfillment) {
             var scope = angular.element("#fulfillmentController").scope();

@@ -8,54 +8,50 @@
         var chat = $.connection.gridHub;
         $.connection.hub.start();
     });
+    
+     items = @Html.Raw(ServiceStack.Text.JsonSerializer.SerializeToString(Model));
 </script>
 
 <div ng-app>
     <div ng-controller="OrderCtrl">
-        <a href="#modalOrders" role="button" class="btn" data-toggle="modal">New Order</a>
         <p>&nbsp;</p>
-
+        
         <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Customer</th>
-                    <th>Item</th>
-                    <th>Quantity</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="order in orders">
-                    <td>{{order.customerFirstName}} {{order.customerLastName}}</td> 
-                    <td>{{order.itemName}}</td> 
-                    <td>{{order.quantity}}</td> 
-                </tr>
-            </tbody>
+        <tbody>
+        <tr data-ng-repeat="itemSet in itemSets">
+            <td data-ng-repeat="item in itemSet" ng-click="openModal(item)">
+                <img ng-src="{{getImgPath(item.value.id)}}"><br/>
+                {{item.value.name}}
+            </td>
+        </tr>
+        </tbody>
         </table>
         
         <!-- Modal Orders Window -->
         <div id="modalOrders" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-body">
-            <form class="form-horizontal">
-                <div class="control-group">
-                    <label class="control-label">Customer</label>
-                    <div class="controls">
-                        <input type="text" ng-model="newOrderCustomerFirstName" placeholder="First Name" class="input-small"/> &nbsp;
-                        <input type="text" ng-model="newOrderCustomerLastName" placeholder="Last Name" class="input-small"/> 
+                <form class="form-horizontal">
+                    <input type="hidden" ng-model="newOrderItemId"/>
+                    <div class="control-group">
+                        <label class="control-label">Customer</label>
+                        <div class="controls">
+                            <input type="text" ng-model="newOrderCustomerFirstName" placeholder="First Name" class="input-small"/> &nbsp;
+                            <input type="text" ng-model="newOrderCustomerLastName" placeholder="Last Name" class="input-small"/> 
+                        </div>
                     </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label">Item</label>
-                    <div class="controls">
-                        <input type="text" ng-model="newOrderItemName" placeholder="Item"/> 
+                    <div class="control-group">
+                        <label class="control-label">Item</label>
+                        <div class="controls">
+                            <input type="text" ng-model="newOrderItemName" placeholder="Item"/> 
+                        </div>
                     </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label">Quantity</label>
-                    <div class="controls">
-                        <input type="text" class="input-mini" ng-model="newOrderQuantity" placeholder="Quantity"/> 
+                    <div class="control-group">
+                        <label class="control-label">Quantity</label>
+                        <div class="controls">
+                            <input type="text" class="input-mini" ng-model="newOrderQuantity" placeholder="Quantity"/> 
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form>
             </div>
             <div class="modal-footer">
                 <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>

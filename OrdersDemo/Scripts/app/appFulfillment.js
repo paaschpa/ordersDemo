@@ -17,6 +17,12 @@
 
     $scope.refreshGrid();
 
+    $scope.applyFormat = function (fulfillment) {
+        if (fulfillment.fulfiller == $scope.fulfiller) {
+            return 'success';
+        }
+    };
+
     $scope.getButtonText = function (status) {
         if (status == 'New') {
             return 'Start';
@@ -32,18 +38,24 @@
     $scope.changeState = function (fulfillment) {
         var el = $('#' + fulfillment.id);
         if (fulfillment.status == 'New') {
-            $http.put('/api/fulfillment', {status: 'Start', id: fulfillment.id, fulfiller: $scope.fulfiller})
+            $http.put('/api/fulfillment', { status: 'Start', id: fulfillment.id, fulfiller: $scope.fulfiller })
                 .success(function (data) {
                     fulfillment.status = 'Start';
                     fulfillment.fulfiller = $scope.fulfiller;
+                    fulfillment.waitTime = 'Wait ' + fulfillment.quantity + ' to complete!';
 
                     el.attr('disabled', true);
                     var t = window.setTimeout(function () {
-                        el.attr('disabled', false);
+                        $scope.$apply(function () {
+                            el.attr('disabled', false); //don't need jquery here just needed to use $scope.$apply
+                            fulfillment.waitTime = '';
+                        });
                     }, 1000 * fulfillment.quantity);
                 })
                 .error(function (data) {
                     console.log(data);
+                    $scope.message = data.responseStatus.message;
+                    $('#modalMessage').modal('show');
                 });
 
             return;
@@ -55,6 +67,7 @@
                 })
                 .error(function (data) {
                     $scope.message = data.responseStatus.message;
+                    $('#modalMessage').modal('show');
                 });
 
             return;

@@ -5,6 +5,7 @@ using System.Text;
 using OrdersDemo.ServiceModel.Operations;
 using ServiceStack.CacheAccess;
 using ServiceStack.FluentValidation;
+using ServiceStack.OrmLite;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
 
@@ -13,10 +14,12 @@ namespace OrdersDemo.ServiceInterface.Validators
     public class UpdatefillmentValidator : AbstractValidator<UpdateFulfillment>
     {
         public ICacheClient CacheClient { get; set; }
+        public IDbConnectionFactory DbConnectionFactory { get; set; }
 
         public UpdatefillmentValidator()
         {
             RuleFor(f => f.Fulfiller).Must(ValidUpdater).WithMessage("Not yours to complete!");
+            RuleFor(f => f.Fulfiller).Must(ValidateNumberFulFilling).WithMessage("At Max open fulfillments!");
         }
 
         public bool ValidUpdater(UpdateFulfillment instance, string fulfiller)
@@ -27,6 +30,26 @@ namespace OrdersDemo.ServiceInterface.Validators
             {
                 return false;
             }
+            return true;
+        }
+
+        public bool ValidateNumberFulFilling(UpdateFulfillment instance, string fulfiller)
+        {
+            using (var con = DbConnectionFactory.OpenDbConnection())
+            {
+                var numberOfFulfillments =
+                    con.Query<int>("Select count(Id) From Fulfillment Where Status <> 'Completed' And Fulfiller = ?",
+                                    new {fulfiller = fulfiller}).FirstOrDefault();
+                if (instance.Status == "Start")
+                {
+                    numberOfFulfillments += 1; //add one to limit 'active working' fulfillments to 3 per fulfiller
+                }
+                if (numberOfFulfillments >= 4)
+                {
+                    return false;
+                }
+            }
+
             return true;
         }
     }

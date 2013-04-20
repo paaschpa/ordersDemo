@@ -31,19 +31,33 @@
                 <th>Worker</th>
                 <th>Status</th>
                 <th>Action</th>
+                <th>Your Wait</th>
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="order in fulfillments">
-                <td>{{order.itemName}}</td> 
-                <td>{{order.quantity}}</td> 
-                <td>{{order.fulfiller}}</td> 
-                <td>{{order.status}}</td> 
-                <td>{{order.disable}}</td> 
-                <td><button id="{{order.id}}" class="btn btn-success" ng-click="changeState(order)">{{getButtonText(order.status)}}</button></td> 
+            <tr ng-repeat="fulfillment in fulfillments" ng-class="applyFormat(fulfillment)">
+                <td>{{fulfillment.itemName}}</td> 
+                <td>{{fulfillment.quantity}}</td> 
+                <td>{{fulfillment.fulfiller}}</td> 
+                <td>{{fulfillment.status}}</td> 
+                <td><button id="{{fulfillment.id}}" class="btn btn-success" ng-click="changeState(fulfillment)">{{getButtonText(fulfillment.status)}}</button></td> 
+                <td>{{fulfillment.waitTime}}</td> 
             </tr>
         </tbody>
     </table>
+
+        <!-- Modal Message Window -->
+        <div id="modalMessage" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-body">
+                <p>OH NOES!</p>
+                <p>{{message}}</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+            </div>
+        </div>
+
+    
 </div>
 </div>
  

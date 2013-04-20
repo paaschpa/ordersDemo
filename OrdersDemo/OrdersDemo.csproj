@@ -176,7 +176,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ArcherItems.cs" />
     <Compile Include="Models\DummyUserAccount.cs" />
+    <Compile Include="Models\MyRegistrationValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SignalR\GridHub.cs" />
   </ItemGroup>
@@ -189,6 +191,12 @@
     <Content Include="Content\bootstrap\img\glyphicons-halflings.png" />
     <Content Include="Content\bootstrap\js\bootstrap.js" />
     <Content Include="Content\bootstrap\js\bootstrap.min.js" />
+    <Content Include="Content\Images\1.jpg" />
+    <Content Include="Content\Images\2.jpg" />
+    <Content Include="Content\Images\3.jpg" />
+    <Content Include="Content\Images\4.jpg" />
+    <Content Include="Content\Images\5.jpg" />
+    <Content Include="Content\Images\6.jpg" />
     <Content Include="Content\js\ss-validation.js" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -196,8 +204,10 @@
     <Content Include="README.txt" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\app\appFulfillment.js" />
+    <Content Include="Scripts\app\appLeaders.js" />
     <Content Include="Scripts\app\appOrders.js" />
     <Content Include="Scripts\app\appOrdersQueue.js" />
+    <Content Include="Scripts\app\appRegistration.js" />
     <Content Include="Scripts\jquery.js" />
     <Content Include="Scripts\jquery.signalR-1.0.1.js" />
     <Content Include="Scripts\jquery.signalR-1.0.1.min.js" />
@@ -258,6 +268,13 @@
   <ItemGroup>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\OrdersDemo.pubxml" />
+    <Content Include="Views\Home\Register.cshtml" />
+    <Content Include="Views\Fulfillment\Leaders.cshtml">
+      <SubType>Code</SubType>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -2,14 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using Microsoft.AspNet.SignalR;
 using OrdersDemo.ServiceModel;
 using OrdersDemo.ServiceModel.Operations;
-using ServiceStack.CacheAccess;
-using ServiceStack.Redis;
 using ServiceStack.Text;
-using ServiceStack.WebHost.Endpoints;
 
 namespace OrdersDemo.ServiceInterface.Subscribers
 {
@@ -24,6 +20,8 @@ namespace OrdersDemo.ServiceInterface.Subscribers
             //Create a fulfillment when an Order is posted
             StartThread("NewOrder", (channel, msg) =>
                     {
+                        Fulfillment newFulfillment;
+                        
                         var createOrderRequest = msg.FromJson<Order>();
                         var createFulfillment = new CreateFulfillment
                         {
@@ -33,14 +31,14 @@ namespace OrdersDemo.ServiceInterface.Subscribers
                         };
                         using (var service = Container.Resolve<FulfillmentService>())
                         {
-                            service.Post(createFulfillment);
+                            newFulfillment = service.Post(createFulfillment);
                         }
 
                         //Alert connections
                         var hub = GlobalHost.ConnectionManager.GetHubContext("GridHub");
                         if (hub != null)
                         {
-                            hub.Clients.All.refreshGrid("newOrder");
+                            hub.Clients.All.addToGrid(newFulfillment);
                         }
                     });
 

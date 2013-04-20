@@ -6,11 +6,18 @@
 <script>
     $(document).ready(function () {
         var chat = $.connection.gridHub;
-        chat.client.refreshGrid = function () {
+        chat.client.updateGrid = function (fulfillment) {
             var scope = angular.element("#fulfillmentController").scope();
-            scope.refreshGrid();
+            scope.updateGrid(fulfillment);
+        };
+        chat.client.addToGrid = function (fulfillment) {
+            var scope = angular.element("#fulfillmentController").scope();
+            scope.addToGrid(fulfillment);
         };
         $.connection.hub.start();
+
+        angular.element("#fulfillmentController").scope().setFulfiller('@Model.UserName');
+
     });
 </script>
 <div ng-app>
@@ -32,7 +39,8 @@
                 <td>{{order.quantity}}</td> 
                 <td>{{order.fulfiller}}</td> 
                 <td>{{order.status}}</td> 
-                <td><button class="btn btn-success" ng-click="changeState(order)">{{getButtonText(order.status)}}</button></td> 
+                <td>{{order.disable}}</td> 
+                <td><button id="{{order.id}}" class="btn btn-success" ng-click="changeState(order)">{{getButtonText(order.status)}}</button></td> 
             </tr>
         </tbody>
     </table>

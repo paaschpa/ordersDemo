@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -14,6 +15,13 @@ namespace OrdersDemo.Controllers
     {
         [Authenticate]
         public ActionResult Index()
+        {
+            dynamic viewModel = new ExpandoObject();
+            viewModel.UserName = this.AuthSession.UserName;
+            return View(viewModel);
+        }
+
+        public ActionResult Leaders()
         {
             return View();
         }

@@ -43,8 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Leader.cs" />
     <Compile Include="Operations\Fulfillment\CreateFulfillment.cs" />
     <Compile Include="Fulfillment.cs" />
+    <Compile Include="Operations\Fulfillment\Leaders.cs" />
     <Compile Include="Operations\Order\CreateOrder.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="OrderInQueue.cs" />

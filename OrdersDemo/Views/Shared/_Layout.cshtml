@@ -29,25 +29,31 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="brand" href="#">NotHelloWorld</a>
+                    <a class="brand" href="/">NotHelloWorld</a>
                     <div class="nav-collapse collapse">
                         <ul class="nav">
-                            <li class="active"><a href="/">Home</a></li>
-                            <li class="active">
+                            <li class="active"><a href="/Orders">Orders</a></li>
                                 @{ 
                                     //TODO:hmmm, might be missing a better way to do this...
                                     var key = SessionFeature.GetSessionKey() ?? "";
                                     var sess = AppHost.Resolve<ICacheClient>().Get<AuthUserSession>(key);
                                     if (sess != null && sess.IsAuthenticated)
                                     {
-                                        @:<a href="/home/logout">Logout @sess.UserName </a>
+                                        <li class="active">
+                                            <a href="Fulfillment">Fulfillment</a>
+                                        </li>
+                                        <li class="active">
+                                            <a href="/home/logout">Logout @sess.UserName </a>
+                                        </li>
                                     }
                                     else
                                     {
-                                        @:<a href="/home/login">Login (Gives access to Order Fulfillments)</a>
+                                        <li class="active">
+                                            <a href="/home/login">Fulfiller Login</a>
+                                        </li>
                                     }
                                 }
-                            </li>
+                            <li class="active"><a href="/Home/Register">Register to Play</a></li>
                         </ul>
                     </div><!--/.nav-collapse -->
                 </div>

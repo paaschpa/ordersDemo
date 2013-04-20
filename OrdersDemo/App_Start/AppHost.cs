@@ -7,8 +7,10 @@ using Microsoft.AspNet.SignalR;
 using OrdersDemo.Models;
 using OrdersDemo.ServiceInterface;
 using OrdersDemo.ServiceInterface.Subscribers;
+using OrdersDemo.ServiceInterface.Validators;
 using OrdersDemo.ServiceModel;
 using ServiceStack.CacheAccess;
+using ServiceStack.FluentValidation;
 using ServiceStack.Mvc;
 using ServiceStack.OrmLite;
 using ServiceStack.Redis;
@@ -16,6 +18,7 @@ using ServiceStack.Redis.Messaging;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
+using ServiceStack.ServiceInterface.Validation;
 using ServiceStack.WebHost.Endpoints;
 
 [assembly: WebActivator.PreApplicationStartMethod(typeof(OrdersDemo.App_Start.AppHost), "Start")]
@@ -38,6 +41,12 @@ namespace OrdersDemo.App_Start
                     new IAuthProvider[] { new CredentialsAuthProvider() }
                 ) {HtmlRedirect = null});
 
+            Plugins.Add(new RegistrationFeature());
+            this.RegisterAs<MyRegistrationValidator, IValidator<Registration>>();
+            
+            Plugins.Add(new ValidationFeature());
+            container.RegisterValidators(typeof(CreateOrderValidator).Assembly);
+
             var dataFilePath = AppDomain.CurrentDomain.GetData("DataDirectory").ToString() + "\\data.db";
 		    container.Register<IDbConnectionFactory>(new OrmLiteConnectionFactory(dataFilePath, SqliteDialect.Provider));
 
@@ -53,7 +62,6 @@ namespace OrdersDemo.App_Start
             //https://github.com/ServiceStack/ServiceStack.Redis/wiki/RedisPubSub
             //start threads that subscribe to Redis channels for Pub/Sub
             new OrderSubscribers(container).StartSubscriberThreads();
-            new FulfillmentSubscribers(container).StartSubscriberThreads();
 
             //https://github.com/ServiceStack/ServiceStack/wiki/Authentication-and-authorization#userauth-persistence---the-iuserauthrepository
             //Use ServiceStacks authentication/authorization persistence

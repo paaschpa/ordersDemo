@@ -17,6 +17,14 @@ namespace OrdersDemo.ServiceInterface
     [Authenticate]
     public class FulfillmentService : OrdersDemoServiceBase
     {
+        public List<Leader> Get(Leaders request)
+        {
+            var leaders = DbConnExec<List<Leader>>((con) => con
+                .Select<Leader>(@"Select Fulfiller as Name, Count(Id) as Score From Fulfillment Where Status = 'Completed' Group By Fulfiller"));
+
+            return leaders;
+        }
+
         public List<Fulfillment> Get(Fulfillment request)
         {
             var ev = OrmLiteConfig.DialectProvider.ExpressionVisitor<Fulfillment>();

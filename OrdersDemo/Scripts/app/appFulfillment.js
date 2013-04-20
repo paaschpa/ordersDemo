@@ -80,6 +80,9 @@
                 $scope.$apply(function () {
                     $scope.fulfillments[i].status = fulfillment.Status;
                     $scope.fulfillments[i].fulfiller = fulfillment.Fulfiller;
+                    if ($scope.fulfillments[i].status == 'Completed') {
+                        $scope.fulfillments.splice(i, 1);
+                    }
                 });
                 break;
             }

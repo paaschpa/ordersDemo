@@ -204,6 +204,7 @@
     <Content Include="README.txt" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\app\appFulfillment.js" />
+    <Content Include="Scripts\app\appLeaders.js" />
     <Content Include="Scripts\app\appOrders.js" />
     <Content Include="Scripts\app\appOrdersQueue.js" />
     <Content Include="Scripts\app\appRegistration.js" />
@@ -272,6 +273,9 @@
   <ItemGroup>
     <None Include="Properties\PublishProfiles\OrdersDemo.pubxml" />
     <Content Include="Views\Home\Register.cshtml" />
+    <Content Include="Views\Fulfillment\Leaders.cshtml">
+      <SubType>Code</SubType>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

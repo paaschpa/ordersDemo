@@ -21,6 +21,11 @@ namespace OrdersDemo.Controllers
             return View(viewModel);
         }
 
+        public ActionResult Leaders()
+        {
+            return View();
+        }
+
         public override ActionResult AuthenticationErrorResult
         {
             get

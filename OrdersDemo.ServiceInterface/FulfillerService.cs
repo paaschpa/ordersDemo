@@ -19,8 +19,10 @@ namespace OrdersDemo.ServiceInterface
     {
         public List<Leader> Get(Leaders request)
         {
-            var leaders = DbConnExec<List<Leader>>((con) => con
-                .Select<Leader>(@"Select Fulfiller as Name, Count(Id) as Score From Fulfillment Where Status = 'Completed' Group By Fulfiller"));
+            var sql = @"Select Fulfiller as Name, Count(Id) as Score From Fulfillment 
+                        Where Status = 'Completed' Group By Fulfiller
+                        Order by Count(Id) desc";
+            var leaders = DbConnExec<List<Leader>>((con) => con.Select<Leader>(sql));
 
             return leaders;
         }

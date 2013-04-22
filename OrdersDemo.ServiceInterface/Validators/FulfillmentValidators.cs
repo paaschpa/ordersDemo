@@ -44,7 +44,7 @@ namespace OrdersDemo.ServiceInterface.Validators
                 {
                     numberOfFulfillments += 1; //add one to limit 'active working' fulfillments to 3 per fulfiller
                 }
-                if (numberOfFulfillments >= 4)
+                if (numberOfFulfillments >= 2)
                 {
                     return false;
                 }

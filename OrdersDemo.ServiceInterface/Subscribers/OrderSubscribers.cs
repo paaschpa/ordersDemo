@@ -51,6 +51,7 @@ namespace OrdersDemo.ServiceInterface.Subscribers
                             OrderId = createOrderRequest.Id,
                             CustomerName = createOrderRequest.CustomerFirstName,
                             ItemName = createOrderRequest.ItemName,
+                            Quantity = createOrderRequest.Quantity,
                             Status = "New"
                         };
                         using (var service = Container.Resolve<OrderQueueService>())
@@ -62,7 +63,7 @@ namespace OrdersDemo.ServiceInterface.Subscribers
                         var hub = GlobalHost.ConnectionManager.GetHubContext("GridHub");
                         if (hub != null)
                         {
-                            hub.Clients.All.refreshGrid("newOrder");
+                            hub.Clients.All.addToGrid(createOrderInQueue);
                         }
                     });
         }

@@ -6,9 +6,13 @@
 <script>
     $(document).ready(function () {
         var chat = $.connection.gridHub;
-        chat.client.refreshGrid = function () {
+        chat.client.updateGrid = function (order) {
             var scope = angular.element("#QueueController").scope();
-            scope.refreshGrid();
+            scope.updateGrid(order);
+        };
+        chat.client.addToGrid = function (order) {
+            var scope = angular.element("#QueueController").scope();
+            scope.addToGrid(order);
         };
         $.connection.hub.start();
     });
@@ -21,8 +25,8 @@
             <tr>
                 <th>Customer</th>
                 <th>Item</th>
+                <th>Quantity</th>
                 <th>Status</th>
-                <th>Enter Date</th>
                 <th>Worker</th>
             </tr>
         </thead>
@@ -30,8 +34,8 @@
             <tr ng-repeat="order in orders">
                 <td>{{order.customerName}}</td> 
                 <td>{{order.itemName}}</td> 
+                <td>{{order.quantity}}</td> 
                 <td>{{order.status}}</td> 
-                <td>{{dateFormat(order.createdDate)}}</td> 
                 <td>{{order.fulfiller}}</td> 
             </tr>
         </tbody>

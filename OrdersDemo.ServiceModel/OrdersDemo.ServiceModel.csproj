@@ -48,6 +48,7 @@
     <Compile Include="Fulfillment.cs" />
     <Compile Include="Operations\Fulfillment\Leaders.cs" />
     <Compile Include="Operations\Order\CreateOrder.cs" />
+    <Compile Include="Operations\Order\UpdateOrderInQueue.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="OrderInQueue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

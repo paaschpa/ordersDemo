@@ -38,19 +38,19 @@
     $scope.changeState = function (fulfillment) {
         var el = $('#' + fulfillment.id);
         if (fulfillment.status == 'New') {
-            $http.put('/api/fulfillment', { status: 'Start', id: fulfillment.id, fulfiller: $scope.fulfiller })
+            $http.put('/api/fulfillment', { status: 'Start', id: fulfillment.id, fulfiller: $scope.fulfiller, orderId: fulfillment.orderId })
                 .success(function (data) {
+                    var waitTime = getWaitTime(fulfillment.quantity);
                     fulfillment.status = 'Start';
                     fulfillment.fulfiller = $scope.fulfiller;
-                    fulfillment.waitTime = 'Wait ' + fulfillment.quantity + ' to complete!';
+                    fulfillment.waitTime = 'Wait ' + waitTime + ' seconds to complete!';
 
                     el.attr('disabled', true);
                     var t = window.setTimeout(function () {
                         $scope.$apply(function () {
                             el.attr('disabled', false); //don't need jquery here just needed to use $scope.$apply
-                            fulfillment.waitTime = '';
                         });
-                    }, 1000 * fulfillment.quantity);
+                    }, waitTime);
                 })
                 .error(function (data) {
                     console.log(data);
@@ -61,7 +61,7 @@
             return;
         }
         if (fulfillment.status == 'Start') {
-            $http.put('/api/fulfillment', { status: 'Completed', id: fulfillment.id, fulfiller: fulfillment.fulfiller })
+            $http.put('/api/fulfillment', { status: 'Completed', id: fulfillment.id, fulfiller: fulfillment.fulfiller, orderId: fulfillment.orderId })
                 .success(function (data) {
                     fulfillment.status = 'Completed';
                 })
@@ -102,5 +102,13 @@
         }
         return;
     };
+
+    function getWaitTime(quantity) {
+        if (quantity > 10) {
+            quantity = quantity / 10;
+        }
+
+        return Math.floor(Math.random() * (quantity - 1) + 1);
+    }
 
 }

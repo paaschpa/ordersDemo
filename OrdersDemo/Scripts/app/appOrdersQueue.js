@@ -15,4 +15,32 @@
         return dateFilter(dt, 'medium');
     };
 
+    $scope.addToGrid = function (order) {
+        $scope.$apply(function () {
+            var orderInQueue = {
+                orderId: order.OrderId,
+                itemName: order.ItemName,
+                quantity: order.Quantity,
+                status: order.Status
+            };
+            $scope.orders.push(orderInQueue);
+        });
+    };
+
+    $scope.updateGrid = function (order) {
+        for (var i = 0; i < $scope.orders.length; i++) {
+            if (order.OrderId == $scope.orders[i].orderId) {
+                $scope.$apply(function () {
+                    $scope.orders[i].status = order.Status;
+                    $scope.orders[i].fulfiller = order.Fulfiller;
+                    if ($scope.orders[i].status == 'Completed') {
+                        $scope.orders.splice(i, 1);
+                    }
+                });
+                break;
+            }
+        }
+        return;
+    };
+
 }

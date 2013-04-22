@@ -53,7 +53,7 @@ namespace OrdersDemo.App_Start
             var userRep = new OrmLiteAuthRepository(container.Resolve<IDbConnectionFactory>());
 		    container.Register<IUserAuthRepository>(userRep);
             var redisCon = ConfigurationManager.AppSettings["redisUrl"].ToString();
-		    container.Register<IRedisClientsManager>(new PooledRedisClientManager(10, 60, redisCon));
+		    container.Register<IRedisClientsManager>(new PooledRedisClientManager(20, 60, redisCon));
             container.Register<ICacheClient>(c =>(ICacheClient)c.Resolve<IRedisClientsManager>().GetCacheClient());
 
 		    //Set MVC to use the same Funq IOC as ServiceStack

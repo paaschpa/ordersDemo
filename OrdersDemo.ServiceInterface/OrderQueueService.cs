@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using OrdersDemo.ServiceModel;
+using OrdersDemo.ServiceModel.Operations;
 using ServiceStack.Redis;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
@@ -18,7 +19,7 @@ namespace OrdersDemo.ServiceInterface
         {
             var ordersInQueue = RedisExec((redisCon) => redisCon.GetAllEntriesFromHash("urn:OrdersInQueue")
                                             .Select(x => x.Value.FromJson<OrderInQueue>())
-                                            .ToList());
+                                            .OrderBy(x => x.CreatedDate).ToList());
 
             return ordersInQueue;
         }
@@ -32,7 +33,7 @@ namespace OrdersDemo.ServiceInterface
             return "Item Succesfully Added";
         }
 
-        public object Put(OrderInQueue request)
+        public object Put(UpdateOrderInQueue request)
         {
             var result = RedisExec((redisCon) =>
                 {

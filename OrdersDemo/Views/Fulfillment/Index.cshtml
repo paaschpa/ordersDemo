@@ -26,6 +26,7 @@
     <table class="table table-striped">
         <thead>
             <tr>
+                <th></th>
                 <th>Item</th>
                 <th>Quantity</th>
                 <th>Worker</th>
@@ -36,6 +37,7 @@
         </thead>
         <tbody>
             <tr ng-repeat="fulfillment in fulfillments" ng-class="applyFormat(fulfillment)">
+                <td><img ng-src="Content/Images/{{fulfillment.itemId}}.jpg" width="75" height="75"></td> 
                 <td>{{fulfillment.itemName}}</td> 
                 <td>{{fulfillment.quantity}}</td> 
                 <td>{{fulfillment.fulfiller}}</td> 

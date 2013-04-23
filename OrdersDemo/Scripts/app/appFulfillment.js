@@ -50,7 +50,7 @@
                         $scope.$apply(function () {
                             el.attr('disabled', false); //don't need jquery here just needed to use $scope.$apply
                         });
-                    }, waitTime);
+                    }, waitTime * 1000);
                 })
                 .error(function (data) {
                     console.log(data);

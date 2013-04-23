@@ -11,6 +11,7 @@ namespace OrdersDemo.ServiceModel
     {
         public int OrderId { get; set; }
         public string CustomerName { get; set; }
+        public int ItemId { get; set; }
         public string ItemName { get; set; }
         public int Quantity { get; set; }
         public string Fulfiller { get; set; }

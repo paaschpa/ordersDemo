@@ -26,6 +26,7 @@ namespace OrdersDemo.ServiceInterface.Subscribers
                         var createFulfillment = new CreateFulfillment
                         {
                             OrderId = createOrderRequest.Id,
+                            ItemId = createOrderRequest.ItemId,
                             ItemName = createOrderRequest.ItemName,
                             Quantity = createOrderRequest.Quantity
                         };
@@ -50,6 +51,7 @@ namespace OrdersDemo.ServiceInterface.Subscribers
                         {
                             OrderId = createOrderRequest.Id,
                             CustomerName = createOrderRequest.CustomerFirstName,
+                            ItemId = createOrderRequest.ItemId,
                             ItemName = createOrderRequest.ItemName,
                             Quantity = createOrderRequest.Quantity,
                             Status = "New"

@@ -8,6 +8,7 @@ using OrdersDemo.ServiceModel.Operations;
 using ServiceStack.Common;
 using ServiceStack.OrmLite;
 using ServiceStack.Redis;
+using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
 using ServiceStack.Text;

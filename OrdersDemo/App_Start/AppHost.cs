@@ -9,6 +9,7 @@ using OrdersDemo.ServiceInterface;
 using OrdersDemo.ServiceInterface.Subscribers;
 using OrdersDemo.ServiceInterface.Validators;
 using OrdersDemo.ServiceModel;
+using ServiceStack.Api.Swagger;
 using ServiceStack.CacheAccess;
 using ServiceStack.FluentValidation;
 using ServiceStack.Mvc;
@@ -47,6 +48,8 @@ namespace OrdersDemo.App_Start
             Plugins.Add(new ValidationFeature());
             container.RegisterValidators(typeof(CreateOrderValidator).Assembly);
 
+            Plugins.Add(new SwaggerFeature());
+
             var dataFilePath = AppDomain.CurrentDomain.GetData("DataDirectory").ToString() + "\\data.db";
 		    container.Register<IDbConnectionFactory>(new OrmLiteConnectionFactory(dataFilePath, SqliteDialect.Provider));
 
@@ -70,11 +73,17 @@ namespace OrdersDemo.App_Start
             //Create Tables for the demo
             using (var con = AppHostBase.Resolve<IDbConnectionFactory>().OpenDbConnection())
 		    {
-                con.CreateTable<Order>();
-                con.CreateTable<Fulfillment>();
+                con.CreateTable<Order>(true);
+                con.CreateTable<Fulfillment>(true);
 		    }
 
-            //Create dummy user accounts (TestUser/Password)
+            //clear redis
+		    using (var redis = AppHostBase.Resolve<IRedisClientsManager>().GetClient())
+		    {
+                redis.Remove("urn:OrdersInQueue");
+		    }
+
+		    //Create dummy user accounts (TestUser/Password)
             foreach(var user in DummyUserAccounts.GetDummyAccounts())
             {
                 if(userRep.GetUserAuthByUserName(user.UserName) == null)

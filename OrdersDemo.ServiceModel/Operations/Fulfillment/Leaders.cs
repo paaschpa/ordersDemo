@@ -6,7 +6,7 @@ using ServiceStack.ServiceHost;
 
 namespace OrdersDemo.ServiceModel.Operations
 {
-    [Route("/leaders", "GET")]
+    [Route("/Leaders", "GET")]
     public class Leaders
     {
     }

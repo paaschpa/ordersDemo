@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ServiceStack.ServiceHost;
 
 namespace OrdersDemo.ServiceModel.Operations
 {
+    [Route("/WaitingFulfillment", "PUT")]
     public class UpdateOrderInQueue
     {
         public int OrderId { get; set; }

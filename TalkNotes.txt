@@ -1,0 +1,5 @@
+-clear redis
+--redis-cli -h ahost -p aport -a password
+
+-ALWAYS HAVE REDIS RUNNING - CHANGE TO LOCALHOST
+

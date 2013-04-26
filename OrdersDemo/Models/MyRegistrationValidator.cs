@@ -21,6 +21,7 @@ namespace OrdersDemo.Models
             {
                 RuleFor(x => x.Password).NotEmpty();
                 RuleFor(x => x.UserName).NotEmpty().When(x => x.Email.IsNullOrEmpty());
+                RuleFor(x => x.UserName).Length(3, 35);
                 RuleFor(x => x.UserName)
                     .Must(x => UserAuthRepo.GetUserAuthByUserName(x) == null)
                     .WithErrorCode("AlreadyExists")

@@ -5,7 +5,7 @@
 <script src='@Href("/Scripts/app/appOrdersQueue.js")'></script>
 <script>
     $(document).ready(function () {
-        var chat = $.connection.gridHub;
+        var chat = $.connection.ordersQueueGridHub;
         chat.client.updateGrid = function (order) {
             var scope = angular.element("#QueueController").scope();
             scope.updateGrid(order);

@@ -18,6 +18,7 @@
     $scope.addToGrid = function (order) {
         $scope.$apply(function () {
             var orderInQueue = {
+                customerName: order.CustomerName,
                 orderId: order.OrderId,
                 itemName: order.ItemName,
                 quantity: order.Quantity,

@@ -5,7 +5,7 @@
 <script src='@Href("/Scripts/app/appFulfillment.js")'></script>
 <script>
     $(document).ready(function () {
-        var chat = $.connection.gridHub;
+        var chat = $.connection.fulfillmentGridHub;
         chat.client.updateGrid = function (fulfillment) {
             var scope = angular.element("#fulfillmentController").scope();
             scope.updateGrid(fulfillment);

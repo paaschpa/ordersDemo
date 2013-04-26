@@ -42,6 +42,11 @@ namespace OrdersDemo.ServiceInterface
                     if (!String.IsNullOrEmpty(orderToUpdateJson))
                     {
                         var orderToUpdate = JsonSerializer.DeserializeFromString<OrderInQueue>(orderToUpdateJson);
+                        if (request.Status == "Completed")
+                        {
+                            redisCon.RemoveEntryFromHash("urn:OrdersInQueue", orderToUpdate.OrderId.ToString());
+                            return "Entry Removed";
+                        }
                         orderToUpdate.Status = request.Status;
                         orderToUpdate.Fulfiller = request.Fulfiller;
                         redisCon.SetEntryInHash("urn:OrdersInQueue", orderToUpdate.OrderId.ToString(), orderToUpdate.ToJson());

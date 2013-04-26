@@ -36,7 +36,7 @@ namespace OrdersDemo.ServiceInterface.Subscribers
                         }
 
                         //Alert connections
-                        var hub = GlobalHost.ConnectionManager.GetHubContext("GridHub");
+                        var hub = GlobalHost.ConnectionManager.GetHubContext("FulfillmentGridHub");
                         if (hub != null)
                         {
                             hub.Clients.All.addToGrid(newFulfillment);
@@ -62,7 +62,7 @@ namespace OrdersDemo.ServiceInterface.Subscribers
                         }
 
                         //Alert connections
-                        var hub = GlobalHost.ConnectionManager.GetHubContext("GridHub");
+                        var hub = GlobalHost.ConnectionManager.GetHubContext("OrdersQueueGridHub");
                         if (hub != null)
                         {
                             hub.Clients.All.addToGrid(createOrderInQueue);

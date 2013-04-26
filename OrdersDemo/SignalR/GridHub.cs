@@ -6,7 +6,15 @@ using Microsoft.AspNet.SignalR;
 
 namespace OrdersDemo.SignalR
 {
-    public class GridHub : Hub
+    public class FulfillmentGridHub : Hub
+    {
+        public void Refresh(string message)
+        {
+            Clients.All.refreshGrid(message);
+        }
+    }
+
+    public class OrdersQueueGridHub : Hub
     {
         public void Refresh(string message)
         {

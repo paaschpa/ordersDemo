@@ -65,12 +65,17 @@ namespace OrdersDemo.ServiceInterface
                     fulfillmentToUpdate.Fulfiller = base.SessionAs<AuthUserSession>().UserName;
                     con.Update<Fulfillment>(fulfillmentToUpdate);
                 });
-   
-                var hub = GlobalHost.ConnectionManager.GetHubContext("GridHub");
-                if (hub != null)
-                {
-                    hub.Clients.All.updateGrid(fulfillmentToUpdate);
-                }
+
+            //Refresh FulfillmentGrid
+            var hub = GlobalHost.ConnectionManager.GetHubContext("FulfillmentGridHub");
+            if (hub != null)
+            {
+                hub.Clients.All.updateGrid(fulfillmentToUpdate);
+            }
+
+            //Publish Message
+            RedisExec((redisCon) => redisCon.PublishMessage("FulfillmentUpdate", fulfillmentToUpdate.ToJson()));
+
 
             return fulfillmentToUpdate;
         }

@@ -18,7 +18,7 @@ namespace OrdersDemo.ServiceInterface.Subscribers
         public void StartSubscriberThreads() //need to resolve dependencies...
         {
             //UpdateQueue when fulfillment it updated
-            StartThread("", (channel, msg) =>
+            StartThread("FulfillmentUpdate", (channel, msg) =>
                     {
                         var updateRequest = msg.FromJson<UpdateFulfillment>();
                         var updateOrderInQueue = new UpdateOrderInQueue 
@@ -31,6 +31,13 @@ namespace OrdersDemo.ServiceInterface.Subscribers
                         {
                             service.Put(updateOrderInQueue);
                         }
+
+                        var hub = GlobalHost.ConnectionManager.GetHubContext("OrdersQueueGridHub");
+                        if (hub != null)
+                        {
+                            hub.Clients.All.updateGrid(updateOrderInQueue);
+                        }
+
                     });
         }
     }

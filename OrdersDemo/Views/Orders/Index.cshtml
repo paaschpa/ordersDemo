@@ -4,11 +4,6 @@
 
 <script src='@Href("/Scripts/app/appOrders.js")'></script>
 <script>
-    $(document).ready(function() {
-        var chat = $.connection.gridHub;
-        $.connection.hub.start();
-    });
-    
      items = @Html.Raw(ServiceStack.Text.JsonSerializer.SerializeToString(Model));
 </script>
 

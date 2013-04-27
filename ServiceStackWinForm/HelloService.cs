@@ -4,13 +4,13 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using ServiceStack.ServiceClient.Web;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.ServiceModel;
 
 namespace ServiceStackWinForm
 {
-    [Description("ServiceStack's Hello World web service.")]
     [Route("/hello")]
     [Route("/hello/{Name*}")]
     public class Hello 

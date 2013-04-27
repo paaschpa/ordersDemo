@@ -6,7 +6,8 @@
     $scope.register = function () {
         var newRegistration = {
             'username': $scope.userName,
-            'password': $scope.password
+            'password': $scope.password,
+            'autologin': true
         };
 
         var registration = $http.post('/api/register', newRegistration);

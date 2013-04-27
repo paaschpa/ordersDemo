@@ -3,7 +3,6 @@ using System.Linq;
 using System.Configuration;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using Microsoft.AspNet.SignalR;
 using OrdersDemo.Models;
 using OrdersDemo.ServiceInterface;
 using OrdersDemo.ServiceInterface.Subscribers;
@@ -15,8 +14,6 @@ using ServiceStack.FluentValidation;
 using ServiceStack.Mvc;
 using ServiceStack.OrmLite;
 using ServiceStack.Redis;
-using ServiceStack.Redis.Messaging;
-using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
 using ServiceStack.ServiceInterface.Validation;
@@ -37,18 +34,22 @@ namespace OrdersDemo.App_Start
 			//Set JSON web services to return idiomatic JSON camelCase properties
 			ServiceStack.Text.JsConfig.EmitCamelCaseNames = true;
 
+            //https://github.com/wordnik/swagger-core/wiki
+            //Document your code and expose it to the world
+            Plugins.Add(new SwaggerFeature());
+
+            //Registers authorization service and endpoints /auth and /auth{provider}
             Plugins.Add(new AuthFeature(
                     () => new AuthUserSession(),
                     new IAuthProvider[] { new CredentialsAuthProvider() }
                 ) {HtmlRedirect = null});
 
+            //Registers registartion service and endpoints /register, /assignroles, /unassignroles
             Plugins.Add(new RegistrationFeature());
             this.RegisterAs<MyRegistrationValidator, IValidator<Registration>>();
             
             Plugins.Add(new ValidationFeature());
             container.RegisterValidators(typeof(CreateOrderValidator).Assembly);
-
-            Plugins.Add(new SwaggerFeature());
 
             var dataFilePath = AppDomain.CurrentDomain.GetData("DataDirectory").ToString() + "\\data.db";
 		    container.Register<IDbConnectionFactory>(new OrmLiteConnectionFactory(dataFilePath, SqliteDialect.Provider));
@@ -71,7 +72,7 @@ namespace OrdersDemo.App_Start
             //Use ServiceStacks authentication/authorization persistence
             userRep.CreateMissingTables(); //Create missing Auth
             
-            //Create Tables for the demo
+            //Re-Create Tables for the demo
             using (var con = AppHostBase.Resolve<IDbConnectionFactory>().OpenDbConnection())
 		    {
                 con.CreateTable<Order>(true);
@@ -81,9 +82,7 @@ namespace OrdersDemo.App_Start
             //clear redis
 		    using (var redis = AppHostBase.Resolve<IRedisClientsManager>().GetClient())
 		    {
-                redis.Remove("urn:OrdersInQueue");
 		    }
-
 		    //Create dummy user accounts (TestUser/Password)
             foreach(var user in DummyUserAccounts.GetDummyAccounts())
             {

@@ -1,5 +1,5 @@
 This is the demo application used in my ServiceStack talk at Chicago Code Camp. A
-running version should be availabe at [ccdemo.apphb.com](http://ccdemo.apphb.com)
+running version should be available at [ccdemo.apphb.com](http://ccdemo.apphb.com)
 
 **Scenario:**
 Think of it like a Starbucks. Orders are entered by a user (or taken by a cashier).

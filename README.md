@@ -3,7 +3,7 @@ running version should be available at [ccdemo.apphb.com](http://ccdemo.apphb.co
 
 **Scenario:**
 Think of it like a Starbucks. Orders are entered by a user (or taken by a cashier).
-A fulfiller (barista) starts processing/fulfilling the order. The user can watch the status of their order by watching a queue. Using ServicStack I want to try to create 3 separate systems (Ordering/Fulfilling/Customer Queue) that only know about each via their API.
+A fulfiller (barista) starts processing/fulfilling the order. The user can watch the status of their order by watching a queue. Using ServiceStack I want to try to create 3 separate systems (Ordering/Fulfilling/Customer Queue) that only know about each via their API.
 
 **Notes/Examples:**  
 

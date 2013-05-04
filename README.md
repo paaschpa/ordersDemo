@@ -27,7 +27,7 @@ A fulfiller (barista) starts processing/fulfilling the order. The user can watch
 - Orders are not editable (currently)
 - When an Order is placed a 'NewOrder' message is published
 
-![Ordering](https://github.com/paaschpa/ordersDemo/blob/master/orders.jpg)
+![Ordering](https://raw.github.com/paaschpa/ordersDemo/master/orders.jpg)
 
 **Fulfillment System Concept**:
 
@@ -36,13 +36,13 @@ A fulfiller (barista) starts processing/fulfilling the order. The user can watch
 - Once logged in a Fulfiller can view Orders that have not been fulfilled
 - When a fulfillment is updated a 'UpdateFulfillment' message is published
 
-![Fulfillment](https://github.com/paaschpa/ordersDemo/blob/master/fulfillment.jpg)
+![Fulfillment](https://raw.github.com/paaschpa/ordersDemo/master/fulfillment.jpg)
 
 **Orders Queue Concept**:
 
 - Shows all partial Order data (customer name, item, status) that have not been fulfilled
 
-![Queue](https://github.com/paaschpa/ordersDemo/blob/master/queue.jpg)
+![Queue](https://raw.github.com/paaschpa/ordersDemo/master/queue.jpg)
 
 **Issues**: 
 - If Redis isn't running Visual Studio seems to crash

@@ -1,4 +1,5 @@
 This is the demo application used in my ServiceStack talk at Chicago Code Camp
+Running version should be availabe at [ccdemo.apphb.com](http://ccdemo.apphb.com)
 
 **Scenario:**
 Think of it like a Starbucks. Orders are entered by a user (or taken by a cashier).

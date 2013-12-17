@@ -191,12 +191,10 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\bootstrap\css\bootstrap-responsive.css" />
-    <Content Include="Content\bootstrap\css\bootstrap-responsive.min.css" />
+    <Content Include="Content\bootstrap\css\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap\css\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap\css\bootstrap.css" />
     <Content Include="Content\bootstrap\css\bootstrap.min.css" />
-    <Content Include="Content\bootstrap\img\glyphicons-halflings-white.png" />
-    <Content Include="Content\bootstrap\img\glyphicons-halflings.png" />
     <Content Include="Content\bootstrap\js\bootstrap.js" />
     <Content Include="Content\bootstrap\js\bootstrap.min.js" />
     <Content Include="Content\Images\1.jpg" />
@@ -227,7 +225,6 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.0.6-development-only.js" />
-    <Content Include="Scripts\_references.js" />
     <Content Include="swagger-ui\css\highlight.default.css" />
     <Content Include="swagger-ui\css\screen.css" />
     <Content Include="swagger-ui\images\logo_small.png" />
@@ -294,6 +291,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\bootstrap\fonts\glyphicons-halflings-regular.woff" />
     <None Include="Properties\PublishProfiles\OrdersDemo.pubxml" />
     <Content Include="Views\Home\Register.cshtml" />
     <Content Include="Views\Fulfillment\Leaders.cshtml">

@@ -6,9 +6,8 @@ using System.Web.Mvc;
 using System.Web.Security;
 using OrdersDemo.Models;
 using ServiceStack;
+using ServiceStack.Auth;
 using ServiceStack.Mvc;
-using ServiceStack.ServiceInterface.Auth;
-using ServiceStack.WebHost.Endpoints;
 
 namespace OrdersDemo.Controllers
 {
@@ -29,9 +28,9 @@ namespace OrdersDemo.Controllers
         {
             try
             {
-                var apiAuthService = AppHostBase.Resolve<AuthService>();
-                apiAuthService.RequestContext = System.Web.HttpContext.Current.ToRequestContext();
-                var apiResponse = apiAuthService.Authenticate(new Auth
+                var apiAuthService = AppHostBase.Instance.Resolve<AuthenticateService>();
+                apiAuthService.Request = System.Web.HttpContext.Current.ToRequest();
+                var apiResponse = apiAuthService.Authenticate(new Authenticate
                 {
                     UserName = userName,
                     Password = password,
@@ -50,9 +49,9 @@ namespace OrdersDemo.Controllers
         public ActionResult LogOut()
         {
             //api logout
-            var apiAuthService = AppHostBase.Resolve<AuthService>();
-            apiAuthService.RequestContext = System.Web.HttpContext.Current.ToRequestContext();
-            apiAuthService.Post(new Auth() { provider = "logout" });
+            var apiAuthService = AppHostBase.Instance.Resolve<AuthenticateService>();
+            apiAuthService.Request = System.Web.HttpContext.Current.ToRequest();
+            apiAuthService.Post(new Authenticate() { provider = "logout" });
             //forms logout
             FormsAuthentication.SignOut();
             return RedirectToAction("Index", "Home");

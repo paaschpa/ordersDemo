@@ -1,0 +1,66 @@
+@using OrdersDemo.App_Start
+@using ServiceStack.CacheAccess
+@using ServiceStack.ServiceInterface
+@using ServiceStack.ServiceInterface.Auth
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+    <link href="/Content/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <script src='@Href("/Scripts/jquery.js")'></script>
+    <script src='@Href("/Scripts/jquery.signalR-1.0.1.js")'></script>
+    <script src="~/signalr/hubs"></script>
+    <script src='@Href("/Scripts/angular.js")'></script>
+    <script src='@Href("/Content/bootstrap/js/bootstrap.js")'></script>
+</head>
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="brand" href="/">Instant Archer Items</a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav">
+                            <li class="active"><a href="/Orders">Orders</a></li>
+                                @{ 
+                                    //TODO:hmmm, might be missing a better way to do this...
+                                    var key = SessionFeature.GetSessionKey() ?? "";
+                                    var sess = AppHost.Resolve<ICacheClient>().Get<AuthUserSession>(key);
+                                    if (sess != null && sess.IsAuthenticated)
+                                    {
+                                        <li class="active">
+                                            <a href="/Fulfillment">Fulfillment</a>
+                                        </li>
+                                        <li class="active">
+                                            <a href="/home/logout">Logout @sess.UserName </a>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="active">
+                                            <a href="/home/login">Fulfiller Login</a>
+                                        </li>
+                                    }
+                                }
+                            <li class="active"><a href="/Home/Register">Register to Play</a></li>
+                        </ul>
+                    </div><!--/.nav-collapse -->
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            @RenderBody()
+        </div>
+    </body>
+</html>

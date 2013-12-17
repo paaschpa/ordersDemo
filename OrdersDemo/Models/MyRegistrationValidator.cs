@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using ServiceStack;
+using ServiceStack.Auth;
 using ServiceStack.Common;
 using ServiceStack.FluentValidation;
-using ServiceStack.ServiceInterface;
-using ServiceStack.ServiceInterface.Auth;
 
 namespace OrdersDemo.Models
 {
-    public class MyRegistrationValidator : AbstractValidator<Registration>
+    public class MyRegistrationValidator : AbstractValidator<Register>
     {
         //This will be injected
         public IUserAuthRepository UserAuthRepo { get; set; }

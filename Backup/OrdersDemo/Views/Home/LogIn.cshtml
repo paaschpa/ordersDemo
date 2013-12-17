@@ -1,0 +1,42 @@
+﻿@using OrdersDemo.App_Start
+@using ServiceStack.CacheAccess
+@using ServiceStack.ServiceInterface
+@using ServiceStack.ServiceInterface.Auth
+@{
+    ViewBag.Title = "Login";
+}
+
+@Html.ValidationSummary(true, "Login was unsuccessful. Please correct the errors and try again.")
+@{
+var key = SessionFeature.GetSessionKey() ?? "";
+var sess = AppHost.Resolve<ICacheClient>().Get<AuthUserSession>(key);
+//Should you have logic in your views? No. Do I? Yes.
+//Does it bother me? A little bit. Enough to fix it? No
+}
+@if (sess != null && sess.IsAuthenticated)
+{
+    @:Already Logged in as @sess.UserName
+}
+else
+{
+
+    <form class="form-horizontal" action="LogIn" method="post">
+        <div class="control-group">
+            <label class="control-label">User Name</label>
+            <div class="controls">
+                <input type="text" id="userName" placeholder="User Name" name="userName">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Password</label>
+            <div class="controls">
+                <input type="password" id="password" placeholder="Password" name="password">
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn">Sign in</button>
+            </div>
+        </div>
+    </form>
+}

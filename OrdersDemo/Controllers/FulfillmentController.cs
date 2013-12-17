@@ -4,9 +4,8 @@ using System.Dynamic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using ServiceStack;
 using ServiceStack.Mvc;
-using ServiceStack.ServiceInterface;
-using ServiceStack.ServiceInterface.Auth;
 
 namespace OrdersDemo.Controllers
 {

@@ -1,0 +1,60 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<script src='@Href("/Scripts/app/appOrders.js")'></script>
+<script>
+     items = @Html.Raw(ServiceStack.Text.JsonSerializer.SerializeToString(Model));
+</script>
+
+<div ng-app>
+    <div ng-controller="OrderCtrl">
+        <p>&nbsp;</p>
+        <p align="center"><strong>{{message}}</strong></p>
+        <table class="table table-striped">
+        <tbody>
+        <tr data-ng-repeat="itemSet in itemSets">
+            <td data-ng-repeat="item in itemSet" >
+                <div align="center" style="cursor: pointer" ng-click="openModal(item)">
+                    <img ng-src="{{getImgPath(item.value.id)}}"><br/>
+                    {{item.value.name}}
+                </div>
+            </td>
+        </tr>
+        </tbody>
+        </table>
+        
+        <!-- Modal Orders Window -->
+        <div id="modalOrders" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <input type="hidden" ng-model="newOrderItemId"/>
+                    <div class="control-group">
+                        <label class="control-label">Customer</label>
+                        <div class="controls">
+                            <input type="text" ng-model="newOrderCustomerFirstName" placeholder="First Name" class="input-small" ng-required='!newOrderCustomerFirstName'/> &nbsp;
+                            <input type="text" ng-model="newOrderCustomerLastName" placeholder="Last Name" class="input-small" ng-required='!newOrderCustomerLastName'/> 
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Item</label>
+                        <div class="controls">
+                            <input type="text" ng-model="newOrderItemName" placeholder="Item" readonly/> 
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Quantity</label>
+                        <div class="controls">
+                            <input type="text" class="input-mini" ng-model="newOrderQuantity" placeholder="Quantity"/> *must be between 1 and 100
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                <button class="btn btn-primary" ng-click="addOrder()">Save</button>
+            </div>
+        </div>
+
+    </div>
+</div>

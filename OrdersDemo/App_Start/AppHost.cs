@@ -8,16 +8,16 @@ using OrdersDemo.ServiceInterface;
 using OrdersDemo.ServiceInterface.Subscribers;
 using OrdersDemo.ServiceInterface.Validators;
 using OrdersDemo.ServiceModel;
+using ServiceStack;
 using ServiceStack.Api.Swagger;
-using ServiceStack.CacheAccess;
+using ServiceStack.Auth;
+using ServiceStack.Caching;
+using ServiceStack.Data;
 using ServiceStack.FluentValidation;
 using ServiceStack.Mvc;
 using ServiceStack.OrmLite;
 using ServiceStack.Redis;
-using ServiceStack.ServiceInterface;
-using ServiceStack.ServiceInterface.Auth;
-using ServiceStack.ServiceInterface.Validation;
-using ServiceStack.WebHost.Endpoints;
+using ServiceStack.Validation;
 
 [assembly: WebActivator.PreApplicationStartMethod(typeof(OrdersDemo.App_Start.AppHost), "Start")]
 
@@ -46,13 +46,16 @@ namespace OrdersDemo.App_Start
 
             //Registers registartion service and endpoints /register, /assignroles, /unassignroles
             Plugins.Add(new RegistrationFeature());
-            this.RegisterAs<MyRegistrationValidator, IValidator<Registration>>();
+            this.RegisterAs<MyRegistrationValidator, IValidator<Register>>();
             
             Plugins.Add(new ValidationFeature());
             container.RegisterValidators(typeof(CreateOrderValidator).Assembly);
 
-            var dataFilePath = AppDomain.CurrentDomain.GetData("DataDirectory").ToString() + "\\data.db";
-		    container.Register<IDbConnectionFactory>(new OrmLiteConnectionFactory(dataFilePath, SqliteDialect.Provider));
+            //Prefer SQLite??? Use Below
+            //var dataFilePath = AppDomain.CurrentDomain.GetData("DataDirectory").ToString() + "\\data.db";
+		    //container.Register<IDbConnectionFactory>(new OrmLiteConnectionFactory(dataFilePath, SqliteDialect.Provider));
+
+		    container.Register<IDbConnectionFactory>(new OrmLiteConnectionFactory("", SqlServerDialect.Provider));
 
             var userRep = new OrmLiteAuthRepository(container.Resolve<IDbConnectionFactory>());
 		    container.Register<IUserAuthRepository>(userRep);
@@ -70,17 +73,17 @@ namespace OrdersDemo.App_Start
 
             //https://github.com/ServiceStack/ServiceStack/wiki/Authentication-and-authorization#userauth-persistence---the-iuserauthrepository
             //Use ServiceStacks authentication/authorization persistence
-            userRep.CreateMissingTables(); //Create missing Auth
+            userRep.InitSchema(); //Create missing Auth
             
             //Re-Create Tables for the demo
-            using (var con = AppHostBase.Resolve<IDbConnectionFactory>().OpenDbConnection())
+            using (var con = AppHostBase.Instance.Resolve<IDbConnectionFactory>().OpenDbConnection())
 		    {
                 con.CreateTable<Order>(true);
                 con.CreateTable<Fulfillment>(true);
 		    }
 
             //clear redis
-		    using (var redis = AppHostBase.Resolve<IRedisClientsManager>().GetClient())
+		    using (var redis = AppHostBase.Instance.Resolve<IRedisClientsManager>().GetClient())
 		    {
 		    }
 		    //Create dummy user accounts (TestUser/Password)

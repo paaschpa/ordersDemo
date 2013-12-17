@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Home";
+}
+
+<div>
+<ul>
+<li>@Html.ActionLink("Create Orders", "Index", "Orders")</li>
+<li>@Html.ActionLink("See Order Queue","Queue", "Orders")</li>
+<li>@Html.ActionLink("See Fulfillments","Index", "Fulfillment")</li>
+</ul>
+</div>
+<div>
+    <p>
+        <strong>Goal:</strong> <a href="/Home/Register">Be a Fulfiller</a> and complete/fulfill orders by clicking 'Start' until item is completed.  
+    </p>
+    <p>
+        <strong>Rules/Guide:</strong>
+        <ul>
+            <li>Click the any button labeled 'Start' wait until it's enabled and click 'Complete'</li>
+            <li>You can only have one item/button waiting to be complete</li>
+        </ul>
+    </p>
+</div>

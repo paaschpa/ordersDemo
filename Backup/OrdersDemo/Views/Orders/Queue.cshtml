@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "Queue";
+}
+
+<script src='@Href("/Scripts/app/appOrdersQueue.js")'></script>
+<script>
+    $(document).ready(function () {
+        var chat = $.connection.ordersQueueGridHub;
+        chat.client.updateGrid = function (order) {
+            var scope = angular.element("#QueueController").scope();
+            scope.updateGrid(order);
+        };
+        chat.client.addToGrid = function (order) {
+            var scope = angular.element("#QueueController").scope();
+            scope.addToGrid(order);
+        };
+        $.connection.hub.start();
+    });
+</script>
+
+<div ng-app>
+<div id="QueueController" ng-controller="OrdersQueueCtrl">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Customer</th>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Status</th>
+                <th>Worker</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="order in orders">
+                <td>{{order.customerName}}</td> 
+                <td>{{order.itemName}}</td> 
+                <td>{{order.quantity}}</td> 
+                <td>{{order.status}}</td> 
+                <td>{{order.fulfiller}}</td> 
+            </tr>
+        </tbody>
+    </table>
+</div>
+</div>
+ 

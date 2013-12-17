@@ -1,0 +1,24 @@
+﻿@{
+    ViewBag.Title = "Leaders";
+}
+
+<script src='@Href("/Scripts/app/appLeaders.js")'></script>
+
+<div ng-app>
+    <div ng-controller="LeaderCtrl">
+        <table class="table table-striped"class="table table-striped">
+            <thead>
+                <tr>
+                    <td>Name</td>
+                    <td>Score</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="leader in leaders">
+                    <td>{{leader.name}}</td>
+                    <td>{{leader.score}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -5,12 +5,10 @@ using System.Web;
 using Microsoft.AspNet.SignalR;
 using OrdersDemo.ServiceModel;
 using OrdersDemo.ServiceModel.Operations;
+using ServiceStack;
 using ServiceStack.Common;
 using ServiceStack.OrmLite;
 using ServiceStack.Redis;
-using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
-using ServiceStack.ServiceInterface.Auth;
 using ServiceStack.Text;
 
 namespace OrdersDemo.ServiceInterface
@@ -30,7 +28,7 @@ namespace OrdersDemo.ServiceInterface
 
         public List<Fulfillment> Get(Fulfillment request)
         {
-            var ev = OrmLiteConfig.DialectProvider.ExpressionVisitor<Fulfillment>();
+            var ev = OrmLiteConfig.DialectProvider.SqlExpression<Fulfillment>();
             ev.Where(f => f.Status != "Completed").OrderBy(f => f.Id);
 
             var fulfillments = DbConnExec((con) => con.Select<Fulfillment>(ev));
@@ -39,13 +37,13 @@ namespace OrdersDemo.ServiceInterface
 
         public Fulfillment Post(CreateFulfillment request)
         {
-            var newFulfilllment = request.TranslateTo<Fulfillment>();
+            var newFulfilllment = request.ConvertTo<Fulfillment>();
             newFulfilllment.Status = "New";
 
             DbConnExec((con) =>
                 {
                     con.Insert<Fulfillment>(newFulfilllment);
-                    newFulfilllment.Id = (int)con.GetLastInsertId();
+                    newFulfilllment.Id = (int)con.LastInsertId();
                 });
 
             return newFulfilllment;
@@ -56,7 +54,7 @@ namespace OrdersDemo.ServiceInterface
             Fulfillment fulfillmentToUpdate = null;
             DbConnExecTransaction((con) =>
                 {
-                    fulfillmentToUpdate = con.GetById<Fulfillment>(request.Id);
+                    fulfillmentToUpdate = con.LoadSingleById<Fulfillment>(request.Id);
                     if (request.Status == "Start" && !String.IsNullOrEmpty(fulfillmentToUpdate.Fulfiller))
                     {
                         throw new Exception("Already Started!");
@@ -78,6 +76,11 @@ namespace OrdersDemo.ServiceInterface
 
 
             return fulfillmentToUpdate;
+        }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
         }
     }
 }

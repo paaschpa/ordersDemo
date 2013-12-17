@@ -55,7 +55,10 @@ namespace OrdersDemo.App_Start
             //var dataFilePath = AppDomain.CurrentDomain.GetData("DataDirectory").ToString() + "\\data.db";
 		    //container.Register<IDbConnectionFactory>(new OrmLiteConnectionFactory(dataFilePath, SqliteDialect.Provider));
 
-		    container.Register<IDbConnectionFactory>(new OrmLiteConnectionFactory("", SqlServerDialect.Provider));
+		    container.Register<IDbConnectionFactory>(
+                new OrmLiteConnectionFactory(
+                    ConfigurationManager.ConnectionStrings["DefaultConnection"].ToString(),
+                    SqlServerDialect.Provider));
 
             var userRep = new OrmLiteAuthRepository(container.Resolve<IDbConnectionFactory>());
 		    container.Register<IUserAuthRepository>(userRep);

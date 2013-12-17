@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OrdersDemo.ServiceModel.Operations;
-using ServiceStack.CacheAccess;
+using ServiceStack;
+using ServiceStack.Caching;
+using ServiceStack.Data;
 using ServiceStack.FluentValidation;
 using ServiceStack.OrmLite;
-using ServiceStack.ServiceInterface;
-using ServiceStack.ServiceInterface.Auth;
 
 namespace OrdersDemo.ServiceInterface.Validators
 {
@@ -38,8 +38,8 @@ namespace OrdersDemo.ServiceInterface.Validators
             using (var con = DbConnectionFactory.OpenDbConnection())
             {
                 var numberOfFulfillments =
-                    con.Query<int>("Select count(Id) From Fulfillment Where Status <> 'Completed' And Fulfiller = ?",
-                                    new {fulfiller = fulfiller}).FirstOrDefault();
+                    con.SqlScalar<int>("Select count(Id) From Fulfillment Where Status <> 'Completed' And Fulfiller = ?",
+                                    new {fulfiller = fulfiller});
                 if (instance.Status == "Start")
                 {
                     numberOfFulfillments += 1; //add one to limit 'active working' fulfillments to 3 per fulfiller

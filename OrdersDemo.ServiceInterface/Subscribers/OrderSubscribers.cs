@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.AspNet.SignalR;
 using OrdersDemo.ServiceModel;
 using OrdersDemo.ServiceModel.Operations;
-using ServiceStack.Text;
+using ServiceStack;
 
 namespace OrdersDemo.ServiceInterface.Subscribers
 {

@@ -4,10 +4,8 @@ using System.Linq;
 using System.Web;
 using OrdersDemo.ServiceModel;
 using OrdersDemo.ServiceModel.Operations;
+using ServiceStack;
 using ServiceStack.Redis;
-using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
-using ServiceStack.ServiceInterface.ServiceModel;
 using ServiceStack.Text;
 
 namespace OrdersDemo.ServiceInterface

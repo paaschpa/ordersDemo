@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using ServiceStack;
+using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using ServiceStack.Redis;
-using ServiceStack.ServiceInterface;
 
 namespace OrdersDemo.ServiceInterface
 {

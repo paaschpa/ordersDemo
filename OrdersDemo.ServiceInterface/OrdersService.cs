@@ -5,15 +5,11 @@ using System.Web;
 using Microsoft.AspNet.SignalR;
 using OrdersDemo.ServiceModel;
 using OrdersDemo.ServiceModel.Operations;
+using ServiceStack;
 using ServiceStack.Common;
 using ServiceStack.DataAnnotations;
 using ServiceStack.OrmLite;
 using ServiceStack.Redis;
-using ServiceStack.ServiceClient.Web;
-using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
-using ServiceStack.ServiceInterface.Auth;
-using ServiceStack.ServiceInterface.ServiceModel;
 using ServiceStack.Text;
 
 namespace OrdersDemo.ServiceInterface
@@ -28,12 +24,12 @@ namespace OrdersDemo.ServiceInterface
 
         public Order Post(CreateOrder request)
         {
-            var newOrder = request.TranslateTo<Order>();
+            var newOrder = request.ConvertTo<Order>();
             newOrder.Status = "New";
             DbConnExecTransaction((con) =>
                 {
                     con.Insert(newOrder);
-                    newOrder.Id = (int) con.GetLastInsertId();
+                    newOrder.Id = (int) con.LastInsertId();
                 });
 
             RedisExec((redisCon) => redisCon.PublishMessage("NewOrder", newOrder.ToJson()));

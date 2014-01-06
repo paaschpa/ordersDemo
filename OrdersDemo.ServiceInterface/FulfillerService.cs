@@ -42,8 +42,8 @@ namespace OrdersDemo.ServiceInterface
 
             DbConnExec((con) =>
                 {
-                    con.Insert<Fulfillment>(newFulfilllment);
-                    newFulfilllment.Id = (int)con.LastInsertId();
+                    var newId = con.Insert<Fulfillment>(newFulfilllment, true);
+                    newFulfilllment.Id = (int) newId;
                 });
 
             return newFulfilllment;

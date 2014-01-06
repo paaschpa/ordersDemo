@@ -28,8 +28,8 @@ namespace OrdersDemo.ServiceInterface
             newOrder.Status = "New";
             DbConnExecTransaction((con) =>
                 {
-                    con.Insert(newOrder);
-                    newOrder.Id = (int) con.LastInsertId();
+                    var newId = con.Insert(newOrder, true);
+                    newOrder.Id = (int) newId;
                 });
 
             RedisExec((redisCon) => redisCon.PublishMessage("NewOrder", newOrder.ToJson()));

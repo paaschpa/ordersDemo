@@ -11,6 +11,7 @@ namespace OrdersDemo.ServiceModel
     public class Order : IReturn<Order>
     {
         [AutoIncrement]
+        [PrimaryKey]
         public int Id { get; set; }
         public string CustomerFirstName { get; set; }
         public string CustomerLastName { get; set; }

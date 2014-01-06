@@ -3,21 +3,56 @@
 }
 
 <div>
-<ul>
-<li>@Html.ActionLink("Create Orders", "Index", "Orders")</li>
-<li>@Html.ActionLink("See Order Queue","Queue", "Orders")</li>
-<li>@Html.ActionLink("See Fulfillments","Index", "Fulfillment")</li>
-</ul>
-</div>
-<div>
-    <p>
-        <strong>Goal:</strong> <a href="/Home/Register">Be a Fulfiller</a> and complete/fulfill orders by clicking 'Start' until item is completed.  
-    </p>
-    <p>
-        <strong>Rules/Guide:</strong>
-        <ul>
-            <li>Click the any button labeled 'Start' wait until it's enabled and click 'Complete'</li>
-            <li>You can only have one item/button waiting to be complete</li>
-        </ul>
-    </p>
+    <div class="jumbotron">
+        <div class="container">
+            <p>Think of this like a Starbucks. <a href="/orders">Orders</a> are entered by a user (or taken by a cashier) via some device. 
+                A fulfiller (barista) starts <a href="/fulfillment">processing/fulfilling</a> the order. The user can watch the status of their order by 
+                watching a <a href="/orders/queue">queue</a>. Each system (Ordering/Fulfillment/Customer Queue) should be separate and only talk via their API.</p>
+            <p><a class="btn btn-primary btn-lg" role="button">Start Shopping &raquo;</a></p>
+        </div>
+    </div>
+    
+    <div class="container marketing">
+      <div class="row">
+        <div class="col-lg-4">
+            <img class="img-circle" data-src="holder.js/140x140" alt="This is a heading...get it?"
+                 src="../../Content/Images/archer_face.jpg" />
+          <h2>Ordering System</h2>
+            <p>
+                <ul>
+                    <li>Any user can create an order</li>
+                    <li>Orders are written to a database (SQL Server)</li>
+                    <li>Orders are not currently editable</li>
+                </ul>
+            </p>
+          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+
+        <div class="col-lg-4">
+            <img class="img-circle" data-src="holder.js/140x140" alt="This is a heading...get it?"
+                 src="../../Content/Images/archer_face.jpg" />
+          <h2>Fulfillment System</h2>
+            <p>
+                <ul>
+                    <li>Must be <a href="home/register">registered</a> and <a href="home/login">logged in</a> to fulfill orders</li>
+                    <li>Gamified - See other fulfillers work in real-time (thanks SignalR) and try to fulfill the most orders (larger orders take longer)</li>
+                </ul>
+            </p>
+          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+
+        <div class="col-lg-4">
+            <img class="img-circle" data-src="holder.js/140x140" alt="This is a heading...get it?"
+                 src="../../Content/Images/archer_face.jpg" />
+          <h2>Current Orders</h2>
+            <p>
+                <ul>
+                    <li>Status of orders are updated in real-time</li>
+                </ul> 
+            </p>
+          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+      </div><!-- /.row -->    
+    </div>
+    
 </div>

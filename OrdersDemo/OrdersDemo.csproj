@@ -195,6 +195,7 @@
     <Content Include="Content\bootstrap\css\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap\css\bootstrap.css" />
     <Content Include="Content\bootstrap\css\bootstrap.min.css" />
+    <Content Include="Content\bootstrap\css\carousel.css" />
     <Content Include="Content\bootstrap\js\bootstrap.js" />
     <Content Include="Content\bootstrap\js\bootstrap.min.js" />
     <Content Include="Content\Images\1.jpg" />
@@ -203,6 +204,7 @@
     <Content Include="Content\Images\4.jpg" />
     <Content Include="Content\Images\5.jpg" />
     <Content Include="Content\Images\6.jpg" />
+    <Content Include="Content\Images\archer_face.jpg" />
     <Content Include="Content\js\ss-validation.js" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />

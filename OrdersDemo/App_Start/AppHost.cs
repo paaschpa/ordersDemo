@@ -89,6 +89,7 @@ namespace OrdersDemo.App_Start
             //clear redis
 		    using (var redis = AppHostBase.Instance.Resolve<IRedisClientsManager>().GetClient())
 		    {
+                //TODO:call flushdb
 		    }
 		    //Create dummy user accounts (TestUser/Password)
             foreach(var user in DummyUserAccounts.GetDummyAccounts())

@@ -61,6 +61,7 @@ namespace OrdersDemo.App_Start
                     SqlServerDialect.Provider));
 
             var userRep = new OrmLiteAuthRepository(container.Resolve<IDbConnectionFactory>());
+		    container.Register<IAuthRepository>(userRep);
 		    container.Register<IUserAuthRepository>(userRep);
             var redisCon = ConfigurationManager.AppSettings["redisUrl"].ToString();
 		    container.Register<IRedisClientsManager>(new PooledRedisClientManager(20, 60, redisCon));

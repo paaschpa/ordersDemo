@@ -20,7 +20,6 @@
             $('#RegistrationSuccess').hide();
             $scope.errorMsg = data.responseStatus.message;
         });
-
-
+        
     };
 }

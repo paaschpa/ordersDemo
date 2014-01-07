@@ -82,8 +82,8 @@ namespace OrdersDemo.App_Start
             //Re-Create Tables for the demo
             using (var con = AppHostBase.Instance.Resolve<IDbConnectionFactory>().OpenDbConnection())
 		    {
-                con.CreateTable<Order>(true);
-                con.CreateTable<Fulfillment>(true);
+                con.CreateTable<Order>();
+                con.CreateTable<Fulfillment>();
 		    }
 
             //clear redis

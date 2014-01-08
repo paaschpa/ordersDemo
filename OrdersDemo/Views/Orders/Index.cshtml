@@ -10,7 +10,7 @@
 <div ng-app>
     <div ng-controller="OrderCtrl">
         <p>&nbsp;</p>
-        <p align="center"><strong>{{message}}</strong></p>
+        <p align="center" class="alert alert-success"><strong>{{message}}</strong></p>
         <table class="table table-striped">
         <tbody>
         <tr data-ng-repeat="itemSet in itemSets">
@@ -56,7 +56,7 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-                        <button class="btn btn-primary" ng-click="addOrder()">Save</button>
+                        <button class="btn btn-primary" ng-click="addOrder()">Place Order</button>
                     </div>
                 </div><!--content-->
             </div><!--dialog-->

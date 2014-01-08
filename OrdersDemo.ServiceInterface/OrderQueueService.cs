@@ -12,7 +12,6 @@ namespace OrdersDemo.ServiceInterface
 {
     public class OrderQueueService : OrdersDemoServiceBase
     {
-
         public List<OrderInQueue> Get (OrderInQueue request)
         {
             var ordersInQueue = RedisExec((redisCon) => redisCon.GetAllEntriesFromHash("urn:OrdersInQueue")

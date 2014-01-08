@@ -1,0 +1,196 @@
+SignalR:
+4 Main Patterns
+- Server Broadcast - low-rate, message to all clients, 1 message over the bus, single serialization of message
+- Server Push - low-rate, message to unique clients single subscriber/publisher, unique message over the bus, many messages serialized
+- User Event Driven - broadcast depends on clients (chat system)
+- High Frequency - gaming (< 25/sec)
+
+http://channel9.msdn.com/Events/Build/2013/3-502 -> Scaling the Real-time Web
+
+.server.SOME_SERVER_METHOD;
+Pub/Sub architecture client
+No Session interaction because of locking; check out HubState
+2.0 Send to Groups; Send to User(IPrincipal)
+logging mode -> connection.logging = true; connection.start();
+10 Concurrent connections WORKSTATION
+TroubleShoot debug Use Perfmon + ASP.NET SignalR Utilities (http://www.nuget.org/packages/Microsoft.AspNet.SignalR.Utils/) .exe/console app
+
+Looks for signal that is Ready for Delivery; Selects the Clients; picks 1st -> Grab message from cache; send bytes down wire (Response.Write/Flush)
+
+LifeTime -> http://www.asp.net/signalr/overview/signalr-20/hubs-api/handling-connection-lifetime-events
+When the user closes a browser window or tab, or navigates to a new page or refreshes the page, the SignalR connection immediately ends because SignalR client code handles that browser event for you and calls the Stop method
+
+disconnect timeout period expires (about 30 seconds by default)
+
+
+
+BootStrap:
+Uses Less
+
+help developers who know a little about design
+Avoid writing javascript
+Style Guide -> line coded style guide
+Base classes -> prefix modifiers
+Focusing on mobile
+Common UI Elements (buttons, alerts, progress bars, labels, pagination, popover, tooltip, modal, collapse)
+
+AngularJS:
+Start With HTML 2-way databinding???
+Key Concepts :> 1- Enhanced DOM, 2-Dependency Injection, 3-use simple objects
++html ng-app="TodoApp"
++ng-controller="TodoCtrl"
+var todoApp = angular.module("TodoApp", []) //no dependencies
+todoApp.controller("TodoCtrl", function AppCtrl($scope) { <- Constructor Function!!!
+
+});
+
+Scope -> Context that is shared between the controller and the template
+constructs ng-repeat
+
+Everything you need to build a CRUD app in a cohesive set: data-binding, basic templating directives, form validation, routing, deep-linking, reusable components, dependency injection.
+Testability story: unit-testing, end-to-end testing, mocks, test harnesses.
+
+The loaded, transformed and rendered DOM is then called the "view"
+Seed application with directory layout and test scripts as a starting point.
+
+. 'dot' -> important for sharing across controllers and managing 'scope' model that will bind everywhere	
+
+transclusion -> inclusion of one document (or part of it) into another document
+
+$provide -> sets up everything for injector (IOC)
+
+::https://egghead.io/lessons/angularjs-providers::
+factory -> no configuration values
+provider -> pass configuration values
+
+Services?? ->  myApp.factory('SomeService', function() { return {someObjectDoingSomething: function(){alert();}}})
+
+Directives?? ->
+app.directive('superman', function() {
+	return {
+		restrict: 'E',
+		template: '<div></div>'
+	}
+});
+
+http://docs.angularjs.org/guide/directive
+why ngModel html-> ng-model?? html is case insensitive
+The normalization process is as follows:
+Strip x- and data- from the front of the element/attributes.
+Convert the :, -, or _-delimited name to camelCase.
+
+angular.module('docsIsolateScopeDirective', [])
+  .controller('Ctrl', function($scope) {
+    $scope.naomi = { name: 'Naomi', address: '1600 Amphitheatre' };
+    $scope.igor = { name: 'Igor', address: '123 Somewhere' };
+  })
+  .directive('myCustomer', function() {
+    return {
+      restrict: 'E',
+      scope: {
+        customerInfo: '=info'
+      },
+      templateUrl: 'my-customer-iso.html'
+    };
+  });
+There are two ways to build a directive. In our example, we’re using the method of returning a directive description object. AngularJS expects either one of these objects or a link function when we’re creating a directive.
+
+Single $ for reserved, public identifiers
+Double $$ for reserved private identifiers
+
+TESTING
+Jasmine
+ /tests/SpecRunner.html
+Copy script tages
+Karma - from AngularJS
+
+
+
+REDIS
+The default Redis configuration is appendfsync everysec that provides a good balance between speed (is almost as fast as appendfsync no) and durability. 
+
+keys *
+flushdb
+hgetall urn:OrdersInQueue
+LRANGE key start stop <LIST>
+
+
+
+
+windowsazure.com -> account -> manage
+
+create a website -> custom -> w/SQL -> check publish from source control
+
+get database name = lcnugdeADRTXBRLx
+
+
+Upgrade all to 4.5 for SignalR
+-Need to link the script file
+-Need to create Owin startup class
+
+Install-Package ServiceStack.Api.Swagger
+Install-Package ServiceStack.Redis
+Install-Package ServiceStack.OrmLite.SqlServer
+Install-Package ServiceStack.Server
+
+
+
+Error	10	'System.Web.Routing.SignalRRouteExtensions.MapHubs(System.Web.Routing.RouteCollection)' is obsolete: 'Use IAppBuilder.MapSignalR in an Owin Startup class. See http://go.microsoft.com/fwlink/?LinkId=320578 for more details.'	C:\Users\ppaasch\Documents\github\OrdersDemo\OrdersDemo\Global.asax.cs	37	13	OrdersDemo
+
+ABC always be source controling
+- make sense in team but also individual
+- commits to recall progress
+- social 
+- push or cloud
+
+Cloud
+- Azure
+- App Harbor
+
+
+
+Code 
+UI - Bootstrap - Angular
+
+API
+ServiceStack
+
+Pub Sub
+Redis
+
+WebSockets/Gamify
+SignalR
+
+
+
+
+BEFORE STARTING
+--SET UP MOUSE
+--Open Git Window on Orders Demo
+--Log Into App Harbor
+--Log Into Azure
+
+Try to go in development process
+
+Have Git Open on OrdersDemo
+Show Gitk --all&
+
+
+@more_than_save
+why?? 
+
+
+CLOUD
+Download publish profile
+Azure Eventlog.xml in LogFiles folder...top most folder
+WebSockets Not Supported Exception
+
+
+
+-clear redis
+--redis-cli -h ahost -p aport -a password
+
+-clear db?? write code for this???
+
+-ALWAYS HAVE REDIS RUNNING - CHANGE TO LOCALHOST
+

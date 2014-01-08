@@ -53,7 +53,7 @@
                     }, waitTime * 1000);
                 })
                 .error(function (data) {
-                    console.log(data);
+                    //console.log(data);
                     $scope.message = data.responseStatus.message;
                     $('#modalMessage').modal('show');
                 });
@@ -79,6 +79,7 @@
             var newFulfillment = {
                 id: fulfillment.Id,
                 orderId: fulfillment.OrderId,
+                itemId: fulfillment.ItemId,
                 itemName: fulfillment.ItemName,
                 quantity: fulfillment.Quantity,
                 status: fulfillment.Status

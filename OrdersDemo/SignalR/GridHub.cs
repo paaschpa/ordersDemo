@@ -8,17 +8,9 @@ namespace OrdersDemo.SignalR
 {
     public class FulfillmentGridHub : Hub
     {
-        public void Refresh(string message)
-        {
-            Clients.All.refreshGrid(message);
-        }
     }
 
     public class OrdersQueueGridHub : Hub
     {
-        public void Refresh(string message)
-        {
-            Clients.All.refreshGrid(message);
-        }
     }
 }

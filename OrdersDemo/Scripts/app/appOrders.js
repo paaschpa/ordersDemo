@@ -2,8 +2,7 @@
 
     $scope.itemSets = items; //global variable...*shrug*
     $scope.message = ''; //start out empty
-    $('#message').hide();
-
+    
     var results = $http.get('api/orders');
     results.success(function (data) {
         $scope.orders = data;

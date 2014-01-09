@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "Angular";
+}
+<script>
+    /*var app = angular.module('sample', []);
+
+    var sampleCtrl = app.controller('sampleCtrl', function($scope) {
+        $scope.data = {};
+        $scope.data.message = "Prefill";
+        $scope.data.optionValues = [{ id: 1, name: 'Test-1' }, { id: 2, name: 'Test-2' }];
+    });
+
+   */ 
+</script>
+
+
+<h2>Angular</h2>
+<div ng-app>
+    <!--<div ng-controller="sampleCtrl">-->
+        <input type="text" ng-model="data.message"/>
+        <div>{{data.message}}</div>
+    <!--</div> end controller-->
+   
+    <!--outside controller
+    <select ng-options="o.name for o in optionValues">
+    </select>-->
+</div>

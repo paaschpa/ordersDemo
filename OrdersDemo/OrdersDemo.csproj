@@ -302,6 +302,7 @@
     <Content Include="Views\Fulfillment\Leaders.cshtml">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Views\Home\Angular.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

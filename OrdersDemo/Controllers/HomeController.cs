@@ -62,5 +62,10 @@ namespace OrdersDemo.Controllers
             return View();
         }
 
+        public ActionResult Angular()
+        {
+            return View();
+        }
+
     }
 }

@@ -2,6 +2,7 @@
 
     $scope.itemSets = items; //global variable...*shrug*
     $scope.message = ''; //start out empty
+    $('#message').hide();
 
     var results = $http.get('api/orders');
     results.success(function (data) {
@@ -32,10 +33,12 @@
             .success(function (data) {
                 console.log(data);
                 $scope.message = 'Order for ' + data.itemName + ' successful.';
+                $('#message').show();
             })
             .error(function (data) {
                 console.log(data);
                 $scope.message = data.responseStatus.message;
+                $('#message').show();
             });
 
         $('#modalOrders').modal('hide');

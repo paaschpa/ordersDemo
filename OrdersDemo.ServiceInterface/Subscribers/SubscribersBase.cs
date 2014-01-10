@@ -40,5 +40,18 @@ namespace OrdersDemo.ServiceInterface.Subscribers
             });
         }
 
+        protected virtual void TryWrapper(Action act)
+        {
+            try
+            {
+                act();
+            }
+            catch (Exception)
+            {
+                //TODO:This is probably a bad way to implement this try but I don't have to write all the try catches and I just want to check 
+                //if exceptions are killing me threads 
+            }
+        }
+
     }
 }

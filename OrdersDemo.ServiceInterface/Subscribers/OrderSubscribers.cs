@@ -18,7 +18,7 @@ namespace OrdersDemo.ServiceInterface.Subscribers
         public void StartSubscriberThreads() //need to resolve dependencies...
         {
             //Create a fulfillment when an Order is posted
-            StartThread("NewOrder", (channel, msg) =>
+            StartThread("NewOrder", (channel, msg) => TryWrapper(() => 
                     {
                         Fulfillment newFulfillment;
                         
@@ -41,10 +41,10 @@ namespace OrdersDemo.ServiceInterface.Subscribers
                         {
                             hub.Clients.All.addToGrid(newFulfillment);
                         }
-                    });
+                    }));
 
             //Create an Order in the Queue when an Order is posted
-            StartThread("NewOrder", (channel, msg) =>
+            StartThread("NewOrder", (channel, msg) => TryWrapper(() => 
                     {
                         var createOrderRequest = msg.FromJson<Order>();
                         var createOrderInQueue = new OrderInQueue
@@ -67,7 +67,7 @@ namespace OrdersDemo.ServiceInterface.Subscribers
                         {
                             hub.Clients.All.addToGrid(createOrderInQueue);
                         }
-                    });
+                    }));
         }
     }
 }

@@ -19,27 +19,26 @@ namespace OrdersDemo.ServiceInterface.Subscribers
         public void StartSubscriberThreads() //need to resolve dependencies...
         {
             //UpdateQueue when fulfillment it updated
-            StartThread("FulfillmentUpdate", (channel, msg) =>
-                    {
-                        var updateRequest = msg.FromJson<UpdateFulfillment>();
-                        var updateOrderInQueue = new UpdateOrderInQueue 
+            StartThread("FulfillmentUpdate", (channel, msg) => TryWrapper(() =>
+                {
+                    var updateRequest = msg.FromJson<UpdateFulfillment>();
+                    var updateOrderInQueue = new UpdateOrderInQueue
                         {
                             OrderId = updateRequest.OrderId,
                             Status = updateRequest.Status,
                             Fulfiller = updateRequest.Fulfiller
                         };
-                        using (var service = Container.Resolve<OrderQueueService>())
-                        {
-                            service.Put(updateOrderInQueue);
-                        }
+                    using (var service = Container.Resolve<OrderQueueService>())
+                    {
+                        service.Put(updateOrderInQueue);
+                    }
 
-                        var hub = GlobalHost.ConnectionManager.GetHubContext("OrdersQueueGridHub");
-                        if (hub != null)
-                        {
-                            hub.Clients.All.updateGrid(updateOrderInQueue);
-                        }
-
-                    });
+                    var hub = GlobalHost.ConnectionManager.GetHubContext("OrdersQueueGridHub");
+                    if (hub != null)
+                    {
+                        hub.Clients.All.updateGrid(updateOrderInQueue);
+                    }
+                }));
         }
     }
 }
